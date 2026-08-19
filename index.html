@@ -111,7 +111,6 @@
         .lang-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
         .lang-item:hover { background: rgba(0,255,204,0.1); color: var(--accent); }
 
-        /* Floating Help Bot Button */
         #floating-help-btn {
             position: fixed;
             bottom: 70px;
@@ -133,7 +132,6 @@
         }
         #floating-help-btn:active { transform: scale(0.9); }
 
-        /* FIXED BOTTOM NAVIGATION (4 Options) */
         nav {
             position: absolute;
             bottom: 0;
@@ -170,7 +168,6 @@
         <p style="color: var(--text-sub); font-size: 11px; margin-top: 4px;">INITIALIZING APP...</p>
     </div>
 
-    <!-- Floating Help Bot Button -->
     <button id="floating-help-btn" onclick="openSupport()" title="Help Bot">🤖</button>
 
     <!-- Language Search Modal -->
@@ -233,26 +230,22 @@
         <button onclick="toggleDarkMode()" id="theme-icon">☀️</button>
     </header>
 
-    <!-- TAB 1: EMAIL -->
+    <!-- TAB 1: EMAIL (No Dummy Data, Real Status Check) -->
     <div id="tab-email" class="content active">
-        <div class="card">
-            <h3 id="lbl-temp-title" style="font-size: 13px; color: var(--text-sub);">Your temporary email address</h3>
-            <div class="email-box" id="display-email">degan41478@tabeebee.com</div>
-            <p id="lbl-temp-desc" style="font-size: 10px; color: var(--text-sub);">Email is randomly generated, expires in about 2 days and cannot be restored.</p>
+        <div class="card" id="email-card-container">
+            <!-- Dynamically populated based on whether user has an active email -->
         </div>
-        <button class="action-btn primary" onclick="copyEmail()" id="btn-copy">COPY TO CLIPBOARD</button>
+        <button class="action-btn primary" onclick="copyEmail()" id="btn-copy" style="display:none;">COPY TO CLIPBOARD</button>
         <button class="action-btn" onclick="openGeneratorModal()" id="btn-new">GET A NEW EMAIL ADDRESS</button>
     </div>
 
     <!-- TAB 2: INBOX -->
     <div id="tab-inbox" class="content">
-        <h3 id="lbl-inbox-heading" style="margin-bottom: 10px; font-size: 15px;">Inbox (1)</h3>
-        <div class="card" style="text-align: left; border-left: 4px solid var(--accent);">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
-                <span style="color: var(--accent); font-weight: bold; font-size: 12px;">"TeraBox"</span>
-                <span style="font-size: 10px; color: var(--text-sub);">14/08/2026</span>
+        <h3 id="lbl-inbox-heading" style="margin-bottom: 10px; font-size: 15px;">Inbox (0)</h3>
+        <div id="inbox-content-area">
+            <div class="card">
+                <p id="lbl-no-messages" style="font-size: 12px; color: var(--text-sub);">No messages received yet. Waiting for incoming mail...</p>
             </div>
-            <p id="lbl-inbox-msg" style="font-size: 12px; line-height: 1.3;">1287 is your TeraBox verification code. Hi, Welcome to TeraBox!</p>
         </div>
     </div>
 
@@ -276,7 +269,7 @@
         </div>
     </div>
 
-    <!-- FIXED BOTTOM NAVIGATION (Exact 4 Options: Email, Inbox, Switch Email, Google) -->
+    <!-- FIXED BOTTOM NAVIGATION (4 Options) -->
     <nav>
         <button onclick="switchTab('email', this)" class="active" id="nav-email">Email</button>
         <button onclick="switchTab('inbox', this)" id="nav-inbox">Inbox</button>
@@ -291,12 +284,8 @@
             setTimeout(() => s.style.display = 'none', 400);
         }, 900);
 
-        let currentEmail = "degan41478@tabeebee.com";
-        let savedEmails = [
-            { email: "degan41478@tabeebee.com", count: "1 messages" },
-            { email: "fitay98030@vemzite.com", count: "3 messages" },
-            { email: "phan.dong.n.hi.19.585@gmail.com", count: "2 messages" }
-        ];
+        let currentEmail = null; // No dummy email initially
+        let savedEmails = [];    // Empty list initially
         let selectedDomainVal = "@oemails.com";
         let selectedPopVal = "@+gmail.com";
         let activeGenMode = "random";
@@ -305,33 +294,39 @@
         const translations = {
             "English": {
                 email: "Email", inbox: "Inbox", switch: "Switch Email", google: "Google",
-                tempTitle: "Your temporary email address", tempDesc: "Email is randomly generated, expires in about 2 days and cannot be restored.",
+                tempTitle: "No active email generated yet", tempDesc: "Click below to create your first temporary email address instantly.",
                 copyBtn: "COPY TO CLIPBOARD", newBtn: "GET A NEW EMAIL ADDRESS",
-                inboxHeading: "Inbox (1)", switchHeading: "Created Email Addresses", searchPlaceholder: "Search generated emails...",
+                inboxHeading: "Inbox (0)", noMessages: "No messages received yet. Waiting for incoming mail...",
+                switchHeading: "Created Email Addresses", searchPlaceholder: "Search generated emails...",
                 googleTitle: "Custom Active Email", googleDesc: "Enter your own active email address:", googleBtn: "SAVE & USE EMAIL",
                 modalTitle: "Select Language", modalClose: "Close", searchLang: "Search language...",
                 gmTitle: "GET A NEW EMAIL ADDRESS", gmSub: "Choose the type of email you want to create.",
-                stRand: "Random", stDom: "Domain", stPop: "Popular", gmCreate: "CREATE NEW EMAIL", gmCancel: "CANCEL"
+                stRand: "Random", stDom: "Domain", stPop: "Popular", gmCreate: "CREATE NEW EMAIL", gmCancel: "CANCEL",
+                activeBoxTitle: "Your temporary email address", activeBoxDesc: "Email is randomly generated, expires in about 2 days and cannot be restored."
             },
             "Hindi (हिन्दी)": {
                 email: "ईमेल", inbox: "इनबॉक्स", switch: "स्विच ईमेल", google: "गूगल",
-                tempTitle: "आपका अस्थायी ईमेल पता", tempDesc: "ईमेल रैंडम रूप से जेनरेट होता है, लगभग 2 दिनों में समाप्त हो जाता है।",
+                tempTitle: "अभी तक कोई सक्रिय ईमेल नहीं बनाया गया है", tempDesc: "तुरंत अपना पहला अस्थायी ईमेल पता बनाने के लिए नीचे क्लिक करें।",
                 copyBtn: "क्लिपबोर्ड पर कॉपी करें", newBtn: "नया ईमेल पता प्राप्त करें",
-                inboxHeading: "इनबॉक्स (1)", switchHeading: "बनाए गए ईमेल पते", searchPlaceholder: "ईमेल खोजें...",
+                inboxHeading: "इनबॉक्स (0)", noMessages: "अभी तक कोई संदेश प्राप्त नहीं हुआ है।",
+                switchHeading: "बनाए गए ईमेल पते", searchPlaceholder: "ईमेल खोजें...",
                 googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "अपना खुद का सक्रिय ईमेल दर्ज करें:", googleBtn: "सहेजें और उपयोग करें",
                 modalTitle: "भाषा चुनें", modalClose: "बंद करें", searchLang: "भाषा खोजें...",
                 gmTitle: "नया ईमेल पता बनाएं", gmSub: "आप किस प्रकार का ईमेल बनाना चाहते हैं चुनें।",
-                stRand: "रैंडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "नया ईमेल बनाएं", gmCancel: "रद्द करें"
+                stRand: "रैंडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "नया ईमेल बनाएं", gmCancel: "रद्द करें",
+                activeBoxTitle: "आपका अस्थायी ईमेल पता", activeBoxDesc: "ईमेल रैंडम रूप से जेनरेट होता है, लगभग 2 दिनों में समाप्त हो जाता है।"
             },
             "Bengali (বাংলা)": {
                 email: "ইমেইল", inbox: "ইনবক্স", switch: "সুইচ ইমেইল", google: "গুগল",
-                tempTitle: "আপনার অস্থায়ী ইমেইল ঠিকানা", tempDesc: "ইমেলটি এলোমেলোভাবে তৈরি হয়, প্রায় 2 দিনের মধ্যে মেয়াদ শেষ হয়।",
+                tempTitle: "এখনও কোনো সক্রিয় ইমেল তৈরি করা হয়নি", tempDesc: "তক্ষণাৎ আপনার প্রথম অস্থায়ী ইমেল ঠিকানা তৈরি করতে নিচে ক্লিক করুন।",
                 copyBtn: "ক্লিপবোর্ডে কপি করুন", newBtn: "একটি নতুন ইমেইল নিন",
-                inboxHeading: "ইনবক্স (1)", switchHeading: "তৈরি করা ইমেইল ঠিকানা", searchPlaceholder: "ইমেল খুঁজুন...",
+                inboxHeading: "ইনবক্স (0)", noMessages: "এখনও কোনো বার্তা পাওয়া যায়নি।",
+                switchHeading: "তৈরি করা ইমেইল ঠিকানা", searchPlaceholder: "ইমেল খুঁজুন...",
                 googleTitle: "কাস্টম সক্রিয় ইমেইল", googleDesc: "আপনার নিজস্ব সক্রিয় ইমেল লিখুন:", googleBtn: "সংরক্ষণ করুন এবং ব্যবহার করুন",
                 modalTitle: "ভাষা নির্বাচন করুন", modalClose: "বন্ধ করুন", searchLang: "ভাষা খুঁজুন...",
                 gmTitle: "নতুন ইমেইল তৈরি করুন", gmSub: "আপনি কোন ধরণের ইমেল তৈরি করতে চান তা চয়ন করুন।",
-                stRand: "র‌্যান্ডম", stDom: "ডোমেন", stPop: "জনপ্রিয়", gmCreate: "নতুন ইমেইল তৈরি করুন", gmCancel: "বাতিল"
+                stRand: "র‌্যান্ডম", stDom: "ডোমেন", stPop: "জনপ্রিয়", gmCreate: "নতুন ইমেইল তৈরি করুন", gmCancel: "বাতিল",
+                activeBoxTitle: "আপনার অস্থায়ী ইমেইল ঠিকানা", activeBoxDesc: "ইমেলটি এলোমেলোভাবে তৈরি হয়, প্রায় 2 দিনের মধ্যে মেয়াদ শেষ হয়।"
             }
         };
 
@@ -353,8 +348,29 @@
         }
         initLanguages();
 
-        document.getElementById("display-email").innerText = currentEmail;
+        updateHomeUI();
         renderEmailList();
+
+        function updateHomeUI() {
+            let t = translations[currentLangKey] || translations["English"];
+            let container = document.getElementById("email-card-container");
+            let copyBtn = document.getElementById("btn-copy");
+
+            if (!currentEmail) {
+                container.innerHTML = `
+                    <h3 id="lbl-temp-title" style="font-size: 14px; color: var(--text-sub);">${t.tempTitle}</h3>
+                    <p id="lbl-temp-desc" style="font-size: 11px; color: var(--text-sub); margin-top: 8px;">${t.tempDesc}</p>
+                `;
+                copyBtn.style.display = "none";
+            } else {
+                container.innerHTML = `
+                    <h3 id="lbl-temp-title" style="font-size: 13px; color: var(--text-sub);">${t.activeBoxTitle}</h3>
+                    <div class="email-box" id="display-email">${currentEmail}</div>
+                    <p id="lbl-temp-desc" style="font-size: 10px; color: var(--text-sub);">${t.activeBoxDesc}</p>
+                `;
+                copyBtn.style.display = "block";
+            }
+        }
 
         function switchTab(tabName, btn) {
             document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
@@ -365,24 +381,32 @@
         }
 
         function copyEmail() {
+            if(!currentEmail) {
+                alert("No email available to copy!");
+                return;
+            }
             navigator.clipboard.writeText(currentEmail).then(() => alert("Email copied to clipboard!"));
         }
 
         function renderEmailList(filter = "") {
             let listHTML = "";
-            savedEmails.forEach(item => {
-                if(filter && !item.email.toLowerCase().includes(filter.toLowerCase())) return;
-                let isActive = (item.email === currentEmail);
-                listHTML += `<div class="card" style="padding: 10px; margin-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="selectEmail('${item.email}')">
-                    <div>
-                        <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${item.email}</div>
-                        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">✉ ${item.count}</div>
-                    </div>
-                    <div style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;">
-                        ${isActive ? '<div style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></div>' : ''}
-                    </div>
-                </div>`;
-            });
+            if(savedEmails.length === 0) {
+                listHTML = `<div class="card"><p style="font-size: 12px; color: var(--text-sub);">No emails created yet. Click '+' to create one.</p></div>`;
+            } else {
+                savedEmails.forEach(item => {
+                    if(filter && !item.email.toLowerCase().includes(filter.toLowerCase())) return;
+                    let isActive = (item.email === currentEmail);
+                    listHTML += `<div class="card" style="padding: 10px; margin-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="selectEmail('${item.email}')">
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${item.email}</div>
+                            <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">✉ ${item.count}</div>
+                        </div>
+                        <div style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;">
+                            ${isActive ? '<div style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></div>' : ''}
+                        </div>
+                    </div>`;
+                });
+            }
             document.getElementById("email-list").innerHTML = listHTML;
         }
 
@@ -392,7 +416,7 @@
 
         function selectEmail(email) {
             currentEmail = email;
-            document.getElementById("display-email").innerText = currentEmail;
+            updateHomeUI();
             switchTab('email', document.querySelectorAll('nav button')[0]);
         }
 
@@ -401,9 +425,9 @@
             if(val) {
                 savedEmails.unshift({ email: val, count: "0 messages" });
                 currentEmail = val;
+                updateHomeUI();
                 alert("Custom Email Linked Successfully!");
                 switchTab('email', document.querySelectorAll('nav button')[0]);
-                document.getElementById("display-email").innerText = currentEmail;
                 document.getElementById("custom-email-input").value = "";
             } else {
                 alert("Please enter a valid email!");
@@ -453,7 +477,7 @@
             if(finalEmail) {
                 savedEmails.unshift({ email: finalEmail, count: "0 messages" });
                 currentEmail = finalEmail;
-                document.getElementById("display-email").innerText = currentEmail;
+                updateHomeUI();
                 closeGeneratorModal();
                 switchTab('email', document.querySelectorAll('nav button')[0]);
                 alert("New email generated and activated!");
@@ -481,12 +505,10 @@
             document.getElementById("nav-switch").innerText = t.switch;
             document.getElementById("nav-google").innerText = t.google;
 
-            document.getElementById("lbl-temp-title").innerText = t.tempTitle;
-            document.getElementById("lbl-temp-desc").innerText = t.tempDesc;
-            document.getElementById("btn-copy").innerText = t.copyBtn;
-            document.getElementById("btn-new").innerText = t.newBtn;
+            updateHomeUI();
 
             document.getElementById("lbl-inbox-heading").innerText = t.inboxHeading;
+            document.getElementById("lbl-no-messages").innerText = t.noMessages;
             document.getElementById("lbl-switch-heading").innerText = t.switchHeading;
             document.getElementById("email-search").placeholder = t.searchPlaceholder;
 
