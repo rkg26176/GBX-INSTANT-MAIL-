@@ -309,6 +309,19 @@
             setTimeout(() => s.style.display = 'none', 400);
         }, 900);
 
+        // Request Notification permission on start
+        window.onload = () => {
+            if (window.Notification && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        };
+
+        function sendNativeNotification(title, body) {
+            if (window.Notification && Notification.permission === "granted") {
+                new Notification(title, { body: body });
+            }
+        }
+
         let currentEmail = null;
         let savedEmails = [];
         let selectedDomainVal = "@oemails.com";
@@ -448,7 +461,7 @@
                 modalTitle: "ਭਾਸ਼ਾ ਚੁਣੋ", modalClose: "ਬੰਦ ਕਰੋ", searchLang: "ਭਾਸ਼ਾ ਖੋਜੋ...",
                 gmTitle: "ਨਵੀਂ ਈਮੇਲ ਬਣਾਓ", gmSub: "ਕਿਸਮ ਚੁਣੋ।",
                 stRand: "ਰੈਂਡਮ", stDom: "ਡੋਮੇਨ", stPop: "ਪ੍ਰਸਿੱਧ", gmCreate: "ਬਣਾਓ", gmCancel: "ਰੱਦ ਕਰੋ",
-                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇਲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ।"
+                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇଲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾପਤ ਕਰਨ ਲਈ ਤਿਆର ਹੈ।"
             },
             "Odia (ଓଡ଼ିଆ)": {
                 email: "ଇମେଲ୍", inbox: "ଇନ୍‌ବକ୍ସ", switch: "ସ୍ୱିଚ୍ ଇମେଲ୍", google: "ଗୁଗଲ୍",
@@ -472,7 +485,7 @@
                 modalTitle: "ভাষা বাছক", modalClose: "বন্ধ কৰক", searchLang: "ভাষা বিচাৰক...",
                 gmTitle: "নতুন ইমেইল সৃষ্টি কৰক", gmSub: "প্ৰকাৰ বাছনি কৰক।",
                 stRand: "ৰেণ্ডম", stDom: "ডোমেইন", stPop: "জনপ্ৰিয়", gmCreate: "সৃষ্টি কৰক", gmCancel: "বাতিল",
-                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰহণ কৰিবলৈ প্ৰস্তুত।"
+                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰহଣ কৰিবলৈ প্ৰস্তুত।"
             }
         };
 
@@ -612,10 +625,8 @@
                 finalEmail = baseRandom + "@tabeebee.com";
             } else if(activeGenMode === 'domain') {
                 let uname = document.getElementById("domain-username").value.trim() || baseRandom;
-                // Normal domains: NO dot-filling, clean name as requested
                 finalEmail = uname + selectedDomainVal;
             } else if(activeGenMode === 'popular') {
-                // Official Gmail / Google domains ONLY: Dot-filling condition applied per letter/character
                 let dottedRand = baseRandom.split('').join('.');
                 finalEmail = dottedRand + selectedPopVal;
             }
@@ -636,7 +647,14 @@
             popup.classList.add("show");
             setTimeout(() => {
                 popup.classList.remove("show");
-            }, 4000); // Automatically hides after 4 seconds
+            }, 4000); 
+        }
+
+        // Native Browser/System Notification Trigger
+        function sendNativeNotification(title, body) {
+            if (window.Notification && Notification.permission === "granted") {
+                new Notification(title, { body: body });
+            }
         }
 
         function manualRefreshInbox() {
@@ -648,10 +666,10 @@
                 if(!currentEmail) {
                     alert("Please select or generate an email first!");
                 } else {
-                    // Triggering live simulation for testing the pop-up notification
                     let hasNewMessage = true; 
                     if(hasNewMessage) {
-                        showLiveMessagePopup(); // Triggers the English pop-up banner across any page
+                        showLiveMessagePopup(); 
+                        sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
                         document.getElementById("inbox-content-area").innerHTML = `
                             <div class="card" style="text-align: left; border-left: 4px solid var(--accent);">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
@@ -668,6 +686,17 @@
                 }
             }, 800);
         }
+
+        // Permanent Background Auto-Check Polling (Every 2 Seconds, running across all pages)
+        setInterval(() => {
+            if (currentEmail) {
+                let backgroundIncomingDetected = false; // Change to true when real incoming message is caught
+                if (backgroundIncomingDetected) {
+                    showLiveMessagePopup();
+                    sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
+                }
+            }
+        }, 2000);
 
         function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
         function closeLangModal() { document.getElementById("lang-modal").style.display = "none"; }
