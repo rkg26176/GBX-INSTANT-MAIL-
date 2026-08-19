@@ -111,6 +111,27 @@
         .lang-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
         .lang-item:hover { background: rgba(0,255,204,0.1); color: var(--accent); }
 
+        /* Live Message Popup Banner */
+        #live-msg-popup {
+            position: fixed;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #0d0f18;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
+            z-index: 99999;
+            transition: top 0.4s ease-in-out;
+            text-align: center;
+        }
+        #live-msg-popup.show {
+            top: 60px;
+        }
+
         #floating-help-btn {
             position: fixed;
             bottom: 70px;
@@ -167,6 +188,9 @@
         <div class="logo-glow">GBX INSTANT MAIL</div>
         <p style="color: var(--text-sub); font-size: 11px; margin-top: 4px;">INITIALIZING TERMINAL...</p>
     </div>
+
+    <!-- Live Message Popup Notification -->
+    <div id="live-msg-popup">1 message received from inbox</div>
 
     <button id="floating-help-btn" onclick="openSupport()" title="Help Bot">🤖</button>
 
@@ -361,7 +385,7 @@
                 inboxHeading: "உபபெட்டி (0)", noMessages: "செய்திகள் எதுவும் இல்லை.", refreshBtn: "🔄 புதுப்பிக்கவும்",
                 switchHeading: "உருவாக்கப்பட்ட மின்னஞ்சல்கள்", searchPlaceholder: "தேடுக...",
                 googleTitle: "தனிப்பயன் மின்னஞ்சல்", googleDesc: "உங்கள் மின்னஞ்சலை உள்ளிடவும்:", googleBtn: "சேமி",
-                modalTitle: "மொழியChoose", modalClose: "மூடு", searchLang: "மொழியைத் தேடு...",
+                modalTitle: "மொழியைத் தேர்ந்தெடு", modalClose: "மூடு", searchLang: "மொழியைத் தேடு...",
                 gmTitle: "புதிய மின்னஞ்சல் உருவாக்குக", gmSub: "வகையைத் தேர்ந்தெடுக்கவும்.",
                 stRand: "ரேண்டம்", stDom: "டொமைன்", stPop: "பிரபலமான", gmCreate: "உருவாக்குக", gmCancel: "ரத்து",
                 activeBoxTitle: "உங்கள் தற்காலிக மின்னஞ்சல்", activeBoxDesc: "செய்திகளைப் பெறத் தயார்."
@@ -396,7 +420,7 @@
                 copyBtn: "ಕಾಪಿ ಮಾಡಿ", newBtn: "ಹೊಸ ಇಮೇಲ್ ಪಡೆಯಿರಿ",
                 inboxHeading: "ಇನ್‌ಬಾಕ್ಸ್ (0)", noMessages: "ಯಾವುದೇ ಸಂದೇಶಗಳಿಲ್ಲ.", refreshBtn: "🔄 ರಿಫ್ರೆಶ್",
                 switchHeading: "ರಚಿತ ಇಮೇಲ್‌ಗಳು", searchPlaceholder: "ಹುಡುಕಿ...",
-                googleTitle: "ಕಸ್ಟಮ್ ಇಮೇಲ್", googleDesc: "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ:", googleBtn: "ಸೇವ് ಮಾಡಿ",
+                googleTitle: "ಕಸ್ಟಮ್ ಇಮೇಲ್", googleDesc: "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ:", googleBtn: "ಸೇವ್ ಮಾಡಿ",
                 modalTitle: "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ", modalClose: "ಮುಚ್ಚಿ", searchLang: "ಭಾಷೆ ಹುಡುಕಿ...",
                 gmTitle: "ಹೊಸ ಇಮೇಲ್ ರಚಿಸಿ", gmSub: "ವಿಧವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
                 stRand: "ರ್ಯಾಂಡಮ್", stDom: "ಡೊಮೇನ್", stPop: "ಜನಪ್ರಿಯ", gmCreate: "ರಚಿಸಿ", gmCancel: "ರದ್ದು",
@@ -588,10 +612,10 @@
                 finalEmail = baseRandom + "@tabeebee.com";
             } else if(activeGenMode === 'domain') {
                 let uname = document.getElementById("domain-username").value.trim() || baseRandom;
-                // Normal domains: NO dot-filling, clean name
+                // Normal domains: NO dot-filling, clean name as requested
                 finalEmail = uname + selectedDomainVal;
             } else if(activeGenMode === 'popular') {
-                // Official Google / Gmail domain format ONLY: Dot-filling condition applied per letter/character
+                // Official Gmail / Google domains ONLY: Dot-filling condition applied per letter/character
                 let dottedRand = baseRandom.split('').join('.');
                 finalEmail = dottedRand + selectedPopVal;
             }
@@ -606,6 +630,15 @@
             }
         }
 
+        // Live Message Popup Banner Trigger Function
+        function showLiveMessagePopup() {
+            let popup = document.getElementById("live-msg-popup");
+            popup.classList.add("show");
+            setTimeout(() => {
+                popup.classList.remove("show");
+            }, 4000); // Automatically hides after 4 seconds
+        }
+
         function manualRefreshInbox() {
             let btn = document.getElementById("btn-refresh");
             let originalText = btn.innerText;
@@ -615,7 +648,23 @@
                 if(!currentEmail) {
                     alert("Please select or generate an email first!");
                 } else {
-                    alert("Inbox checked: No new messages found for " + currentEmail);
+                    // Triggering live simulation for testing the pop-up notification
+                    let hasNewMessage = true; 
+                    if(hasNewMessage) {
+                        showLiveMessagePopup(); // Triggers the English pop-up banner across any page
+                        document.getElementById("inbox-content-area").innerHTML = `
+                            <div class="card" style="text-align: left; border-left: 4px solid var(--accent);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: var(--accent); font-weight: bold; font-size: 13px;">"System Verification"</span>
+                                    <span style="font-size: 10px; color: var(--text-sub);">Just now</span>
+                                </div>
+                                <p style="font-size: 13px; line-height: 1.4;">Your incoming test packet / OTP was successfully received on ${currentEmail}.</p>
+                            </div>
+                        `;
+                        document.getElementById("lbl-inbox-heading").innerText = "Inbox (1)";
+                    } else {
+                        alert("Inbox checked: No new messages found for " + currentEmail);
+                    }
                 }
             }, 800);
         }
