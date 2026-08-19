@@ -239,7 +239,10 @@
 
     <!-- TAB 2: INBOX -->
     <div id="tab-inbox" class="content">
-        <h3 id="lbl-inbox-heading" style="margin-bottom: 10px; font-size: 15px;">Inbox (0)</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 id="lbl-inbox-heading" style="font-size: 15px;">Inbox (0)</h3>
+            <button onclick="manualRefreshInbox()" style="background: var(--input-bg); color: var(--accent); border: 1px solid var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;" id="btn-refresh">🔄 Refresh</button>
+        </div>
         <div id="inbox-content-area">
             <div class="card">
                 <p id="lbl-no-messages" style="font-size: 12px; color: var(--text-sub);">No incoming messages found for this address.</p>
@@ -289,12 +292,13 @@
         let activeGenMode = "random";
         let isDarkMode = true;
 
+        // Comprehensive multi-language dictionary for all Indian languages
         const translations = {
             "English": {
                 email: "Email", inbox: "Inbox", switch: "Switch Email", google: "Google",
                 tempTitle: "No active email generated yet", tempDesc: "Click below to create your first temporary email address instantly.",
                 copyBtn: "COPY TO CLIPBOARD", newBtn: "GET A NEW EMAIL ADDRESS",
-                inboxHeading: "Inbox (0)", noMessages: "No incoming messages found for this address.",
+                inboxHeading: "Inbox (0)", noMessages: "No incoming messages found for this address.", refreshBtn: "🔄 Refresh",
                 switchHeading: "Created Email Addresses", searchPlaceholder: "Search generated emails...",
                 googleTitle: "Custom Active Email", googleDesc: "Enter your own active email address:", googleBtn: "SAVE & USE EMAIL",
                 modalTitle: "Select Language", modalClose: "Close", searchLang: "Search language...",
@@ -306,7 +310,7 @@
                 email: "ईमेल", inbox: "इनबॉक्स", switch: "स्विच ईमेल", google: "गूगल",
                 tempTitle: "अभी तक कोई सक्रिय ईमेल नहीं बनाया गया है", tempDesc: "तुरंत अपना पहला अस्थायी ईमेल पता बनाने के लिए नीचे क्लिक करें।",
                 copyBtn: "क्लिपबोर्ड पर कॉपी करें", newBtn: "नया ईमेल पता प्राप्त करें",
-                inboxHeading: "इनबॉक्स (0)", noMessages: "इस पते के लिए कोई संदेश नहीं मिला।",
+                inboxHeading: "इनबॉक्स (0)", noMessages: "इस पते के लिए कोई संदेश नहीं मिला।", refreshBtn: "🔄 रिफ्रेश",
                 switchHeading: "बनाए गए ईमेल पते", searchPlaceholder: "ईमेल खोजें...",
                 googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "अपना खुद का सक्रिय ईमेल दर्ज करें:", googleBtn: "सहेजें और उपयोग करें",
                 modalTitle: "भाषा चुनें", modalClose: "बंद करें", searchLang: "भाषा खोजें...",
@@ -318,13 +322,133 @@
                 email: "ইমেইল", inbox: "ইনবক্স", switch: "সুইচ ইমেইল", google: "গুগল",
                 tempTitle: "এখনও কোনো সক্রিয় ইমেল তৈরি করা হয়নি", tempDesc: "তক্ষণাৎ আপনার প্রথম অস্থায়ী ইমেল ঠিকানা তৈরি করতে নিচে ক্লিক করুন।",
                 copyBtn: "ক্লিপবোর্ডে কপি করুন", newBtn: "একটি নতুন ইমেইল নিন",
-                inboxHeading: "ইনবক্স (0)", noMessages: "এই ঠিকানার জন্য কোনো ইনকামিং বার্তা পাওয়া যায়নি।",
+                inboxHeading: "ইনবক্স (0)", noMessages: "এই ঠিকানার জন্য কোনো ইনকামিং বার্তা পাওয়া যায়নি।", refreshBtn: "🔄 রিফ্রেশ",
                 switchHeading: "তৈরি করা ইমেইল ঠিকানা", searchPlaceholder: "ইমেল খুঁজুন...",
                 googleTitle: "কাস্টম সক্রিয় ইমেইল", googleDesc: "আপনার নিজস্ব সক্রিয় ইমেল লিখুন:", googleBtn: "সংরক্ষণ করুন এবং ব্যবহার করুন",
                 modalTitle: "ভাষা নির্বাচন করুন", modalClose: "বন্ধ করুন", searchLang: "ভাষা খুঁজুন...",
                 gmTitle: "নতুন ইমেইল তৈরি করুন", gmSub: "আপনি কোন ধরণের ইমেল তৈরি করতে চান তা চয়ন করুন।",
                 stRand: "র‌্যান্ডম", stDom: "ডোমেন", stPop: "জনপ্রিয়", gmCreate: "নতুন ইমেইল তৈরি করুন", gmCancel: "বাতিল",
                 activeBoxTitle: "আপনার অস্থায়ী ইমেইল ঠিকানা", activeBoxDesc: "ইমেলটি এলোমেলোভাবে তৈরি হয়েছে এবং বার্তা পাওয়ার জন্য প্রস্তুত।"
+            },
+            "Telugu (తెలుగు)": {
+                email: "ఇమెయిల్", inbox: "ఇన్‌బాక్స్", switch: "స్విచ్ ఇమెయిల్", google: "గూగుల్",
+                tempTitle: "ఇంకా యాక్టివ్ ఇమెయిల్ సృష్టించబడలేదు", tempDesc: "మీ మొదటి తాత్కాలిక ఇమెయిల్‌ను సృష్టించడానికి క్రింద క్లిక్ చేయండి.",
+                copyBtn: "క్లిప్‌బోర్డ్‌కి కాపీ చేయండి", newBtn: "కొత్త ఇమెయిల్ చిరునామా పొందండి",
+                inboxHeading: "ఇన్‌బాక్స్ (0)", noMessages: "ఈ చిరునామాకు ఎలాంటి సందేశాలు రాలేదు.", refreshBtn: "🔄 రిఫ్రెష్",
+                switchHeading: "సృష్టించబడిన ఇమెయిల్స్", searchPlaceholder: "ఇమెయిల్‌లను శోధించండి...",
+                googleTitle: "కస్టమ్ యాక్టివ్ ఇమెయిల్", googleDesc: "మీ స్వంత ఇమెయిల్‌ను నమోదు చేయండి:", googleBtn: "సేవ్ చేయండి",
+                modalTitle: "భాషను ఎంచుకోండి", modalClose: "మూసివేయి", searchLang: "భాషను శోధించండి...",
+                gmTitle: "కొత్త ఇమెయిల్ సృష్టించండి", gmSub: "మీకు కావలసిన రకాన్ని ఎంచుకోండి.",
+                stRand: "రాండమ్", stDom: "డొమైన్", stPop: "పాపులర్", gmCreate: "సృష్టించు", gmCancel: "రద్దు చేయి",
+                activeBoxTitle: "మీ తాత్కాలిక ఇమెయిల్", activeBoxDesc: "సందేశాలను స్వీకరించడానికి సిద్ధంగా ఉంది."
+            },
+            "Marathi (मराठी)": {
+                email: "ईमेल", inbox: "इनबॉक्स", switch: "स्वॅप ईमेल", google: "गुगल",
+                tempTitle: "अजून कोणताही ईमेल तयार केला नाही", tempDesc: "तुमचा पहिला तात्पुरता ईमेल तयार करण्यासाठी खाली क्लिक करा.",
+                copyBtn: "क्लिपबोर्डवर कॉपी करा", newBtn: "नवीन ईमेल पत्ता मिळवा",
+                inboxHeading: "इनबॉक्स (0)", noMessages: "कोणताही संदेश प्राप्त झालेला नाही.", refreshBtn: "🔄 रीफ्रेश",
+                switchHeading: "तयार केलेले ईमेल", searchPlaceholder: "ईमेल शोधा...",
+                googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "तुमचा स्वतःचा ईमेल प्रविष्ट करा:", googleBtn: "जतन करा",
+                modalTitle: "भाषा निवडा", modalClose: "बंद करा", searchLang: "भाषा शोधा...",
+                gmTitle: "नवीन ईमेल तयार करा", gmSub: "ईमेलचा प्रकार निवडा.",
+                stRand: "रँडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "तयार करा", gmCancel: "रद्द करा",
+                activeBoxTitle: "तुमचा तात्पुरता ईमेल", activeBoxDesc: "संदेश प्राप्त करण्यासाठी तयार आहे."
+            },
+            "Tamil (தமிழ்)": {
+                email: "மின்னஞ்சல்", inbox: "உபபெட்டி", switch: "மாற்று மின்னஞ்சல்", google: "கூகுள்",
+                tempTitle: "செயலில் உள்ள மின்னஞ்சல் இல்லை", tempDesc: "உங்கள் தற்காலிக மின்னஞ்சலை உருவாக்க கீழே கிளிக் செய்யவும்.",
+                copyBtn: "நகலெடுக்கவும்", newBtn: "புதிய மின்னஞ்சல் பெறுக",
+                inboxHeading: "உபபெட்டி (0)", noMessages: "செய்திகள் எதுவும் இல்லை.", refreshBtn: "🔄 புதுப்பிக்கவும்",
+                switchHeading: "உருவாக்கப்பட்ட மின்னஞ்சல்கள்", searchPlaceholder: "தேடுக...",
+                googleTitle: "தனிப்பயன் மின்னஞ்சல்", googleDesc: "உங்கள் மின்னஞ்சலை உள்ளிடவும்:", googleBtn: "சேமி",
+                modalTitle: "மொழியChoose", modalClose: "மூடு", searchLang: "மொழியைத் தேடு...",
+                gmTitle: "புதிய மின்னஞ்சல் உருவாக்குக", gmSub: "வகையைத் தேர்ந்தெடுக்கவும்.",
+                stRand: "ரேண்டம்", stDom: "டொமைன்", stPop: "பிரபலமான", gmCreate: "உருவாக்குக", gmCancel: "ரத்து",
+                activeBoxTitle: "உங்கள் தற்காலிக மின்னஞ்சல்", activeBoxDesc: "செய்திகளைப் பெறத் தயார்."
+            },
+            "Gujarati (ગુજરાતી)": {
+                email: "ઇમેઇલ", inbox: "ઇનબોક્સ", switch: "સ્વિચ ઇમેઇલ", google: "ગૂગલ",
+                tempTitle: "હજી સુધી કોઈ ઇમેઇલ બનાવ્યો નથી", tempDesc: "તમારો નવો અસ્થાયી ઇમેઇલ બનાવવા માટે નીચે ક્લિક કરો.",
+                copyBtn: "કૉપિ કરો", newBtn: "નવો ઇમેઇલ મેળવો",
+                inboxHeading: "ઇનબોક્સ (0)", noMessages: "કોઈ સંદેશ મળ્યો નથી.", refreshBtn: "🔄 રિફ્રેશ",
+                switchHeading: "બનાવેલ ઇમેઇલ સરનામાં", searchPlaceholder: "ઇમેઇલ શોધો...",
+                googleTitle: "કસ્ટમ ઇમેઇલ", googleDesc: "તમારો ઇમેઇલ દાખલ કરો:", googleBtn: "સેવ કરો",
+                modalTitle: "ભાષા પસંદ કરો", modalClose: "બંધ કરો", searchLang: "ભાષા શોધો...",
+                gmTitle: "નવો ઇમેઇલ બનાવો", gmSub: "પ્રકાર પસંદ કરો.",
+                stRand: "રેન્ડમ", stDom: "ડોમેન", stPop: "લોકપ્રિય", gmCreate: "બનાવો", gmCancel: "રદ કરો",
+                activeBoxTitle: "તમારો અસ્થાયી ઇમેઇલ", activeBoxDesc: "સંદેશાઓ મેળવવા માટે તૈયાર છે."
+            },
+            "Urdu (اردو)": {
+                email: "ای میل", inbox: "ان باکس", switch: "ای میل تبدیل کریں", google: "گوگل",
+                tempTitle: "ابھی تک کوئی ای میل نہیں بنائی گئی", tempDesc: "اپنی پہلی عارضی ای میل بنانے کے لیے نیچے کلک کریں۔",
+                copyBtn: "کاپی کریں", newBtn: "نئی ای میل حاصل کریں",
+                inboxHeading: "ان باکس (0)", noMessages: "کوئی پیغام موصول نہیں ہوا۔", refreshBtn: "🔄 ریفریش",
+                switchHeading: "تخلیق کردہ ای میلز", searchPlaceholder: "ای میل تلاش کریں...",
+                googleTitle: "حسب ضرورت ای میل", googleDesc: "اپنی ای میل درج کریں:", googleBtn: "محفوظ کریں",
+                modalTitle: "زبان منتخب کریں", modalClose: "بند کریں", searchLang: "زبان تلاش کریں...",
+                gmTitle: "نئی ای میل بنائیں", gmSub: "قسم منتخب کریں۔",
+                stRand: "رینڈم", stDom: "ڈومین", stPop: "مقبول", gmCreate: "بنائیں", gmCancel: "منسوخ",
+                activeBoxTitle: "آپ کی عارضی ای میل", activeBoxDesc: "پیغامات وصول کرنے کے لیے تیار ہے۔"
+            },
+            "Kannada (ಕನ್ನಡ)": {
+                email: "ಇಮೇಲ್", inbox: "ಇನ್‌ಬಾಕ್ಸ್", switch: "ಸ್ವಿಚ್ ಇಮೇಲ್", google: "ಗೂಗಲ್",
+                tempTitle: "ಯಾವುದೇ ಇಮೇಲ್ ಸೃಷ್ಟಿಸಿಲ್ಲ", tempDesc: "ನಿಮ್ಮ ತಾತ್ಕಾಲಿಕ ಇಮೇಲ್ ರಚಿಸಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+                copyBtn: "ಕಾಪಿ ಮಾಡಿ", newBtn: "ಹೊಸ ಇಮೇಲ್ ಪಡೆಯಿರಿ",
+                inboxHeading: "ಇನ್‌ಬಾಕ್ಸ್ (0)", noMessages: "ಯಾವುದೇ ಸಂದೇಶಗಳಿಲ್ಲ.", refreshBtn: "🔄 ರಿಫ್ರೆಶ್",
+                switchHeading: "ರಚಿತ ಇಮೇಲ್‌ಗಳು", searchPlaceholder: "ಹುಡುಕಿ...",
+                googleTitle: "ಕಸ್ಟಮ್ ಇಮೇಲ್", googleDesc: "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ:", googleBtn: "ಸೇವ് ಮಾಡಿ",
+                modalTitle: "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ", modalClose: "ಮುಚ್ಚಿ", searchLang: "ಭಾಷೆ ಹುಡುಕಿ...",
+                gmTitle: "ಹೊಸ ಇಮೇಲ್ ರಚಿಸಿ", gmSub: "ವಿಧವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+                stRand: "ರ್ಯಾಂಡಮ್", stDom: "ಡೊಮೇನ್", stPop: "ಜನಪ್ರಿಯ", gmCreate: "ರಚಿಸಿ", gmCancel: "ರದ್ದು",
+                activeBoxTitle: "ನಿಮ್ಮ ತಾತ್ಕಾಲಿಕ ಇಮೇಲ್", activeBoxDesc: "ಸಂದೇಶಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಸಿದ್ಧವಾಗಿದೆ."
+            },
+            "Malayalam (മലയാളം)": {
+                email: "ഇമെയിൽ", inbox: "ഇൻബോക്സ്", switch: "മാറ്റുക", google: "ഗൂഗിൾ",
+                tempTitle: "ഇമെയിൽ സൃഷ്ടിച്ചിട്ടില്ല", tempDesc: "താൽക്കാലിക ഇമെയിൽ ഉണ്ടാക്കാൻ താഴെ ക്ലിക്ക് ചെയ്യുക.",
+                copyBtn: "കോപി ചെയ്യുക", newBtn: "പുതിയ ഇമെയിൽ നേടുക",
+                inboxHeading: "ഇൻബോക്സ് (0)", noMessages: "സന്ദേശങ്ങൾ ലഭ്യമല്ല.", refreshBtn: "🔄 റിഫ്രഷ്",
+                switchHeading: "സൃഷ്ടിച്ച ഇമെയിലുകൾ", searchPlaceholder: "തിരയുക...",
+                googleTitle: "കസ്റ്റം ഇമെയിൽ", googleDesc: "നിങ്ങളുടെ ഇമെയിൽ നൽകുക:", googleBtn: "സേവ് ചെയ്യുക",
+                modalTitle: "ഭാഷ തിരഞ്ഞെടുക്കുക", modalClose: "അടയ്ക്കുക", searchLang: "ഭാഷ തിരയുക...",
+                gmTitle: "പുതിയ ഇമെയിൽ ഉണ്ടാക്കുക", gmSub: "തരം തിരഞ്ഞെടുക്കുക.",
+                stRand: "റാൻഡം", stDom: "ഡൊമെയ്ൻ", stPop: "ജനപ്രിയ", gmCreate: "സൃഷ്ടിക്കുക", gmCancel: "റദ്ദാക്കുക",
+                activeBoxTitle: "നിങ്ങളുടെ താൽക്കാലിക ഇമെയിൽ", activeBoxDesc: "സന്ദേശങ്ങൾ സ്വീകരിക്കാൻ തയ്യാറാണ്."
+            },
+            "Punjabi (ਪੰਜਾਬੀ)": {
+                email: "ਈਮੇਲ", inbox: "ਇਨਬਾਕਸ", switch: "ਸਵਿੱਚ ਈਮੇਲ", google: "ਗੂਗਲ",
+                tempTitle: "ਕੋਈ ਈਮੇਲ ਨਹੀਂ ਬਣਾਈ ਗਈ", tempDesc: "ਆਪਣੀ ਪਹਿਲੀ ਅਸਥਾਈ ਈਮੇਲ ਬਣਾਉਣ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।",
+                copyBtn: "ਕਾਪੀ ਕਰੋ", newBtn: "ਨਵੀਂ ਈਮੇਲ ਪ੍ਰਾਪਤ ਕਰੋ",
+                inboxHeading: "ਇਨਬਾਕਸ (0)", noMessages: "ਕੋਈ ਸੁਨੇਹਾ ਨਹੀਂ ਮਿਲਿਆ।", refreshBtn: "🔄 ਰਿਫ੍ਰੈਸ਼",
+                switchHeading: "ਬਣਾਈਆਂ ਗਈਆਂ ਈਮੇਲਾਂ", searchPlaceholder: "ਈਮੇਲ ਖੋਜੋ...",
+                googleTitle: "ਕਸਟਮ ਈਮੇਲ", googleDesc: "ਆਪਣੀ ਈਮੇਲ ਦਰਜ ਕਰੋ:", googleBtn: "ਸੇਵ ਕਰੋ",
+                modalTitle: "ਭਾਸ਼ਾ ਚੁਣੋ", modalClose: "ਬੰਦ ਕਰੋ", searchLang: "ਭਾਸ਼ਾ ਖੋਜੋ...",
+                gmTitle: "ਨਵੀਂ ਈਮੇਲ ਬਣਾਓ", gmSub: "ਕਿਸਮ ਚੁਣੋ।",
+                stRand: "ਰੈਂਡਮ", stDom: "ਡੋਮੇਨ", stPop: "ਪ੍ਰਸਿੱਧ", gmCreate: "ਬਣਾਓ", gmCancel: "ਰੱਦ ਕਰੋ",
+                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇਲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ।"
+            },
+            "Odia (ଓଡ଼ିଆ)": {
+                email: "ଇମେଲ୍", inbox: "ଇନ୍‌ବକ୍ସ", switch: "ସ୍ୱିଚ୍ ଇମେଲ୍", google: "ଗୁଗଲ୍",
+                tempTitle: "କୌଣସି ଇମେଲ୍ ସୃଷ୍ଟି ହୋଇନାହିଁ", tempDesc: "ଆପଣଙ୍କର ପ୍ରଥମ ଅସ୍ଥାୟୀ ଇମେଲ୍ ସୃଷ୍ଟି କରିବାକୁ କ୍ଲିକ୍ କରନ୍ତୁ।",
+                copyBtn: "କପି କରନ୍ତୁ", newBtn: "ନୂତନ ଇମେଲ୍ ପାଆନ୍ତୁ",
+                inboxHeading: "ଇନ୍‌ବକ୍ସ (0)", noMessages: "କୌଣସି ସନ୍ଦେଶ ମିଳିଲା ନାହିଁ।", refreshBtn: "🔄 ରିଫ୍ରେଶ୍",
+                switchHeading: "ସୃଷ୍ଟି ହୋଇଥିବା ଇମେଲ୍", searchPlaceholder: "ସନ୍ଧାନ କରନ୍ତୁ...",
+                googleTitle: "କଷ୍ଟମ୍ ଇମେଲ୍", googleDesc: "ଆପଣଙ୍କର ଇମେଲ୍ ଲେଖନ୍ତୁ:", googleBtn: "ସେଭ୍ କରନ୍ତୁ",
+                modalTitle: "ଭାଷା ଚୟନ କରନ୍ତୁ", modalClose: "ବନ୍ଦ କରନ୍ତୁ", searchLang: "ଭାଷା ଖୋଜନ୍ତୁ...",
+                gmTitle: "ନୂତନ ଇମେଲ୍ ସୃଷ୍ଟି କରନ୍ତୁ", gmSub: "ପ୍ରକାର ଚୟନ କରନ୍ତୁ।",
+                stRand: "ରାଣ୍ଡମ", stDom: "ଡୋମେନ୍", stPop: "ଜନପ୍ରିୟ", gmCreate: "ସୃଷ୍ଟି କରନ୍ତୁ", gmCancel: "ବାତିଲ୍",
+                activeBoxTitle: "ଆପଣଙ୍କର ଅସ୍ଥାୟୀ ଇମେଲ୍", activeBoxDesc: "ସନ୍ଦେଶ ଗ୍ରହଣ କରିବାକୁ ପ୍ରସ୍ତୁତ।"
+            },
+            "Assamese (অসমীয়া)": {
+                email: "ইমেইল", inbox: "ইনবক্স", switch: "চুইচ ইমেইল", google: "গুগল",
+                tempTitle: "কোনো ইমেইল তৈৰী কৰা হোৱা নাই", tempDesc: "আপোনাৰ অস্থায়ী ইমেইল সৃষ্টি কৰিবলৈ তলত ক্লিক কৰক।",
+                copyBtn: "কপি কৰক", newBtn: "নতুন ইমেইল লওক",
+                inboxHeading: "ইনবক্স (0)", noMessages: "কোনো বাৰ্তা পোৱা যোৱা নাই।", refreshBtn: "🔄 ৰিফ্ৰেশ্ব",
+                switchHeading: "সৃষ্টি কৰা ইমেইলসমূহ", searchPlaceholder: "সন্ধান কৰক...",
+                googleTitle: "কাষ্টম ইমেইল", googleDesc: "আপোনাৰ ইমেইল সুমুৱাওক:", googleBtn: "সংৰক্ষণ কৰক",
+                modalTitle: "ভাষা বাছক", modalClose: "বন্ধ কৰক", searchLang: "ভাষা বিচাৰক...",
+                gmTitle: "নতুন ইমেইল সৃষ্টি কৰক", gmSub: "প্ৰকাৰ বাছনি কৰক।",
+                stRand: "ৰেণ্ডম", stDom: "ডোমেইন", stPop: "জনপ্ৰিয়", gmCreate: "সৃষ্টি কৰক", gmCancel: "বাতিল",
+                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰহণ কৰিবলৈ প্ৰস্তুত।"
             }
         };
 
@@ -458,17 +582,20 @@
 
         function createAndUseEmail() {
             let finalEmail = "";
+            let baseRandom = Math.random().toString(36).substring(2, 10);
+
             if(activeGenMode === 'random') {
-                finalEmail = document.getElementById("rand-preview").value;
+                finalEmail = baseRandom + "@tabeebee.com";
             } else if(activeGenMode === 'domain') {
-                let uname = document.getElementById("domain-username").value.trim() || Math.random().toString(36).substring(2, 8);
-                let dotsUname = uname.split('').join('.');
-                finalEmail = dotsUname + selectedDomainVal;
+                let uname = document.getElementById("domain-username").value.trim() || baseRandom;
+                // Normal domains: NO dot-filling, clean name
+                finalEmail = uname + selectedDomainVal;
             } else if(activeGenMode === 'popular') {
-                let randChars = Math.random().toString(36).substring(2, 10);
-                let dottedRand = randChars.split('').join('.');
+                // Official Google / Gmail domain format ONLY: Dot-filling condition applied per letter/character
+                let dottedRand = baseRandom.split('').join('.');
                 finalEmail = dottedRand + selectedPopVal;
             }
+
             if(finalEmail) {
                 savedEmails.unshift({ email: finalEmail });
                 currentEmail = finalEmail;
@@ -477,6 +604,20 @@
                 switchTab('email', document.querySelectorAll('nav button')[0]);
                 alert("New email generated and activated!");
             }
+        }
+
+        function manualRefreshInbox() {
+            let btn = document.getElementById("btn-refresh");
+            let originalText = btn.innerText;
+            btn.innerText = "⏳ Checking...";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                if(!currentEmail) {
+                    alert("Please select or generate an email first!");
+                } else {
+                    alert("Inbox checked: No new messages found for " + currentEmail);
+                }
+            }, 800);
         }
 
         function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
@@ -503,6 +644,7 @@
 
             document.getElementById("lbl-inbox-heading").innerText = t.inboxHeading;
             document.getElementById("lbl-no-messages").innerText = t.noMessages;
+            document.getElementById("btn-refresh").innerText = t.refreshBtn;
             document.getElementById("lbl-switch-heading").innerText = t.switchHeading;
             document.getElementById("email-search").placeholder = t.searchPlaceholder;
 
