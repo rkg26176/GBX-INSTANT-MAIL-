@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GBX Instant Mail</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -31,128 +31,173 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-        body {
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             background-color: var(--bg-color);
             color: var(--text-main);
+        }
+
+        body {
             display: flex;
             flex-direction: column;
-            height: 100vh;
             justify-content: space-between;
-            overflow: hidden;
+            position: relative;
             transition: background 0.3s, color 0.3s;
         }
 
         #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, #1a1c29 0%, #0d0f18 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 999; transition: opacity 0.6s ease-in-out;
+            z-index: 9999; transition: opacity 0.5s ease-in-out;
         }
-        .logo-glow { font-size: 28px; font-weight: 700; color: var(--accent); text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); }
+        .logo-glow { font-size: 26px; font-weight: 700; color: var(--accent); text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); }
 
         header {
             background: var(--header-bg); color: var(--header-text);
-            padding: 14px 16px; display: flex; justify-content: space-between; align-items: center;
-            font-size: 19px; font-weight: 700; box-shadow: 0 4px 20px rgba(0, 255, 204, 0.15);
+            padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
+            font-size: 18px; font-weight: 700; box-shadow: 0 4px 15px rgba(0, 255, 204, 0.15);
+            flex-shrink: 0; height: 50px;
         }
-        header button { background: none; border: none; color: inherit; font-size: 18px; cursor: pointer; padding: 4px 8px; }
+        header button { background: none; border: none; color: inherit; font-size: 15px; cursor: pointer; padding: 4px 8px; }
 
-        .content { flex: 1; padding: 20px; overflow-y: auto; display: none; }
+        .content {
+            flex: 1;
+            width: 100%;
+            padding: 14px;
+            overflow-y: auto;
+            display: none;
+            padding-bottom: 65px; 
+        }
         .content.active { display: block; }
 
         .card {
-            background: var(--card-bg); padding: 20px; border-radius: 16px; text-align: center;
-            margin-bottom: 20px; border: 1px solid rgba(0, 255, 204, 0.15); box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: var(--card-bg); padding: 14px; border-radius: 12px; text-align: center;
+            margin-bottom: 12px; border: 1px solid rgba(0, 255, 204, 0.15); box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
-        .email-box { font-size: 16px; color: var(--accent); margin: 15px 0; word-break: break-all; font-weight: 600; }
+        .email-box { font-size: 14px; color: var(--accent); margin: 10px 0; word-break: break-all; font-weight: 600; }
 
         button.action-btn {
             background-color: var(--input-bg); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px 20px; border-radius: 12px; width: 100%; margin: 10px 0; font-size: 15px; font-weight: 600; cursor: pointer;
+            padding: 11px 16px; border-radius: 10px; width: 100%; margin: 6px 0; font-size: 13px; font-weight: 600; cursor: pointer;
         }
         button.action-btn.primary { background: var(--header-bg); color: var(--header-text); border: none; }
 
         input {
-            width: 100%; padding: 12px; margin: 10px 0; background-color: var(--input-bg);
-            border: 1px solid rgba(0,255,204,0.3); color: var(--text-main); border-radius: 10px; font-size: 15px; outline: none;
+            width: 100%; padding: 10px; margin: 6px 0; background-color: var(--input-bg);
+            border: 1px solid rgba(0,255,204,0.3); color: var(--text-main); border-radius: 8px; font-size: 13px; outline: none;
         }
 
-        /* Sub-tabs inside Generator Modal */
-        .sub-tab-container { display: flex; background: var(--input-bg); border-radius: 10px; padding: 4px; margin-bottom: 15px; }
-        .sub-tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; color: var(--text-sub); }
+        .sub-tab-container { display: flex; background: var(--input-bg); border-radius: 8px; padding: 3px; margin-bottom: 10px; }
+        .sub-tab { flex: 1; padding: 7px; text-align: center; font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 6px; color: var(--text-sub); }
         .sub-tab.active { background: var(--accent); color: #0d0f18; }
 
-        .domain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 160px; overflow-y: auto; margin: 10px 0; }
-        .domain-chip { background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; font-size: 12px; color: var(--text-main); cursor: pointer; text-align: left; }
+        .domain-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 130px; overflow-y: auto; margin: 6px 0; }
+        .domain-chip { background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); padding: 7px; border-radius: 6px; font-size: 11px; color: var(--text-main); cursor: pointer; text-align: left; }
         .domain-chip.selected { border-color: var(--accent); background: rgba(0, 255, 204, 0.1); }
 
-        /* Language Modal */
         #lang-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75);
             display: none; justify-content: center; align-items: center; z-index: 1000;
         }
         .modal-content {
-            background: var(--bg-color); width: 90%; max-width: 400px; max-height: 80vh;
-            border-radius: 16px; padding: 20px; display: flex; flex-direction: column; border: 1px solid var(--accent);
+            background: var(--bg-color); width: 90%; max-width: 380px; max-height: 70vh;
+            border-radius: 14px; padding: 16px; display: flex; flex-direction: column; border: 1px solid var(--accent);
         }
-        .lang-list { overflow-y: auto; margin-top: 10px; flex: 1; }
-        .lang-item { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 14px; }
+        .lang-list { overflow-y: auto; margin-top: 6px; flex: 1; }
+        .lang-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
         .lang-item:hover { background: rgba(0,255,204,0.1); color: var(--accent); }
 
-        .settings-item {
-            background: var(--card-bg); padding: 16px; border-radius: 12px; margin-bottom: 12px;
-            display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+        /* Floating Help Bot Button */
+        #floating-help-btn {
+            position: fixed;
+            bottom: 70px;
+            right: 16px;
+            width: 50px;
+            height: 50px;
+            background: var(--header-bg);
+            color: var(--header-text);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
+            cursor: pointer;
+            z-index: 800;
+            border: none;
+            transition: transform 0.2s;
         }
-        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        #floating-help-btn:active { transform: scale(0.9); }
 
-        nav { display: flex; background-color: var(--nav-bg); border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 0; }
-        nav button { background: none; color: var(--text-sub); border: none; flex: 1; padding: 8px 0; font-size: 11px; font-weight: 500; cursor: pointer; }
-        nav button.active { color: var(--accent); font-weight: 700; }
+        /* FIXED BOTTOM NAVIGATION (4 Options) */
+        nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            display: flex;
+            background-color: var(--nav-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 500;
+            flex-shrink: 0;
+        }
+        nav button {
+            background: none;
+            color: var(--text-sub);
+            border: none;
+            flex: 1;
+            padding: 4px 0;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+        nav button.active {
+            color: var(--accent);
+            text-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
+        }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
         <div class="logo-glow">GBX INSTANT MAIL</div>
-        <p style="color: var(--text-sub); font-size: 13px; margin-top: 5px;">LOADING TERMINAL...</p>
+        <p style="color: var(--text-sub); font-size: 11px; margin-top: 4px;">INITIALIZING APP...</p>
     </div>
+
+    <!-- Floating Help Bot Button -->
+    <button id="floating-help-btn" onclick="openSupport()" title="Help Bot">🤖</button>
 
     <!-- Language Search Modal -->
     <div id="lang-modal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 10px;">Select Language</h3>
+            <h3 id="m-title" style="margin-bottom: 6px; font-size: 15px;">Select Language</h3>
             <input type="text" id="lang-search" placeholder="Search language..." onkeyup="filterLanguages()">
             <div class="lang-list" id="lang-list-container"></div>
-            <button class="action-btn" onclick="closeLangModal()" style="margin-top: 10px;">Close</button>
+            <button class="action-btn" onclick="closeLangModal()" style="margin-top: 6px;" id="m-close">Close</button>
         </div>
     </div>
 
     <!-- Generator Modal -->
     <div id="gen-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000;">
-        <div class="modal-content" style="width: 92%; max-width: 420px;">
-            <h3 style="margin-bottom: 10px; color: var(--accent);">GET A NEW EMAIL ADDRESS</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 15px;">Choose the type of email you want to create.</p>
+        <div class="modal-content" style="width: 90%; max-width: 380px;">
+            <h3 id="gm-title" style="margin-bottom: 6px; color: var(--accent); font-size: 15px;">GET A NEW EMAIL ADDRESS</h3>
+            <p id="gm-sub" style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Choose the type of email you want to create.</p>
             
             <div class="sub-tab-container">
-                <div class="sub-tab active" onclick="switchGenSubTab('random', this)">Random</div>
-                <div class="sub-tab" onclick="switchGenSubTab('domain', this)">Domain</div>
-                <div class="sub-tab" onclick="switchGenSubTab('popular', this)">Popular</div>
+                <div class="sub-tab active" onclick="switchGenSubTab('random', this)" id="st-rand">Random</div>
+                <div class="sub-tab" onclick="switchGenSubTab('domain', this)" id="st-dom">Domain</div>
+                <div class="sub-tab" onclick="switchGenSubTab('popular', this)" id="st-pop">Popular</div>
             </div>
             
             <div id="gen-random">
                 <input type="text" id="rand-preview" value="random@random.com" readonly style="text-align:center; font-weight:bold;">
-                <p style="font-size: 11px; color: var(--text-sub); margin: 5px 0 15px 0;">Email is randomly generated, expires in about 2 days.</p>
+                <p id="gm-rand-info" style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Email is randomly generated, expires in about 2 days.</p>
             </div>
             
             <div id="gen-domain" style="display:none;">
@@ -170,102 +215,81 @@
             <div id="gen-popular" style="display:none;">
                 <div class="domain-grid" style="grid-template-columns: 1fr;">
                     <div class="domain-chip selected" onclick="selectPopular(this, '@+gmail.com')">@+gmail.com</div>
-                    <div class="domain-chip" onclick="selectPopular(this, '@gmail.com')">@gmail.com <span style="background:#ff4757; color:#fff; font-size:9px; padding:2px 5px; border-radius:4px; float:right;">Premium</span></div>
+                    <div class="domain-chip" onclick="selectPopular(this, '@gmail.com')">@gmail.com <span style="background:#ff4757; color:#fff; font-size:8px; padding:2px 4px; border-radius:3px; float:right;">Premium</span></div>
                     <div class="domain-chip" onclick="selectPopular(this, '@googleemail.com')">@googleemail.com</div>
                     <div class="domain-chip" onclick="selectPopular(this, '@+googleemail.com')">@+googleemail.com</div>
                 </div>
             </div>
             
-            <button class="action-btn primary" onclick="createAndUseEmail()" style="margin-top:15px;">CREATE NEW EMAIL</button>
-            <button class="action-btn" onclick="closeGeneratorModal()" style="background:#2a2d3d; margin-top:5px;">CANCEL</button>
+            <button class="action-btn primary" onclick="createAndUseEmail()" style="margin-top:8px;" id="gm-create">CREATE NEW EMAIL</button>
+            <button class="action-btn" onclick="closeGeneratorModal()" style="background:#2a2d3d; margin-top:3px;" id="gm-cancel">CANCEL</button>
         </div>
     </div>
 
     <!-- Header -->
     <header>
         <button onclick="openLangModal()" id="lang-btn">🌐 EN</button>
-        <span>GBX Instant Mail</span>
+        <span id="app-header-title">GBX Instant Mail</span>
         <button onclick="toggleDarkMode()" id="theme-icon">☀️</button>
     </header>
 
-    <!-- TAB 1: EMAIL (Sync to cloud removed) -->
+    <!-- TAB 1: EMAIL -->
     <div id="tab-email" class="content active">
         <div class="card">
-            <h3 style="font-size: 15px; color: var(--text-sub);">Your temporary email address</h3>
+            <h3 id="lbl-temp-title" style="font-size: 13px; color: var(--text-sub);">Your temporary email address</h3>
             <div class="email-box" id="display-email">degan41478@tabeebee.com</div>
-            <p style="font-size: 12px; color: var(--text-sub);">Email is randomly generated, expires in about 2 days and cannot be restored.</p>
+            <p id="lbl-temp-desc" style="font-size: 10px; color: var(--text-sub);">Email is randomly generated, expires in about 2 days and cannot be restored.</p>
         </div>
-        <button class="action-btn primary" onclick="copyEmail()">COPY TO CLIPBOARD</button>
-        <button class="action-btn" onclick="openGeneratorModal()">GET A NEW EMAIL ADDRESS</button>
+        <button class="action-btn primary" onclick="copyEmail()" id="btn-copy">COPY TO CLIPBOARD</button>
+        <button class="action-btn" onclick="openGeneratorModal()" id="btn-new">GET A NEW EMAIL ADDRESS</button>
     </div>
 
     <!-- TAB 2: INBOX -->
     <div id="tab-inbox" class="content">
-        <h3 style="margin-bottom: 15px;">Inbox (1)</h3>
+        <h3 id="lbl-inbox-heading" style="margin-bottom: 10px; font-size: 15px;">Inbox (1)</h3>
         <div class="card" style="text-align: left; border-left: 4px solid var(--accent);">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <span style="color: var(--accent); font-weight: bold;">"TeraBox"</span>
-                <span style="font-size: 11px; color: var(--text-sub);">14/08/2026</span>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                <span style="color: var(--accent); font-weight: bold; font-size: 12px;">"TeraBox"</span>
+                <span style="font-size: 10px; color: var(--text-sub);">14/08/2026</span>
             </div>
-            <p style="font-size: 14px; line-height: 1.4;">1287 is your TeraBox verification code. Hi, Welcome to TeraBox!</p>
+            <p id="lbl-inbox-msg" style="font-size: 12px; line-height: 1.3;">1287 is your TeraBox verification code. Hi, Welcome to TeraBox!</p>
         </div>
     </div>
 
     <!-- TAB 3: SWITCH EMAIL -->
     <div id="tab-switch" class="content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3>Created Email Addresses</h3>
-            <button onclick="openGeneratorModal()" style="background: var(--accent); color: #0d0f18; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 20px; font-weight: bold; cursor: pointer;">+</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 id="lbl-switch-heading" style="font-size: 15px;">Created Email Addresses</h3>
+            <button onclick="openGeneratorModal()" style="background: var(--accent); color: #0d0f18; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer;">+</button>
         </div>
-        <input type="text" id="email-search" placeholder="Search generated emails..." onkeyup="filterEmails()" style="margin-bottom: 15px;">
+        <input type="text" id="email-search" placeholder="Search generated emails..." onkeyup="filterEmails()" style="margin-bottom: 10px;">
         <div id="email-list"></div>
     </div>
 
     <!-- TAB 4: GOOGLE -->
     <div id="tab-google" class="content">
         <div class="card" style="text-align: left;">
-            <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 5px;">Custom Active Email</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 15px;">Enter your own active email address:</p>
+            <h3 id="lbl-google-title" style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Custom Active Email</h3>
+            <p id="lbl-google-desc" style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Enter your own active email address:</p>
             <input type="text" id="custom-email-input" placeholder="Enter your email...">
-            <button class="action-btn primary" onclick="addCustomEmail()" style="margin-top: 15px;">SAVE & USE EMAIL</button>
+            <button class="action-btn primary" onclick="addCustomEmail()" style="margin-top: 8px;" id="lbl-google-btn">SAVE & USE EMAIL</button>
         </div>
     </div>
 
-    <!-- TAB 5: HELP -->
-    <div id="tab-help" class="content">
-        <h3 style="margin-bottom: 15px;">Help & Settings</h3>
-        <div class="settings-item">
-            <span>Dark Mode</span>
-            <label class="switch">
-                <input type="checkbox" id="dark-toggle" checked onchange="toggleDarkMode()">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="settings-item" onclick="openLangModal()">
-            <span>App Language</span>
-            <span style="color: var(--text-sub);">English ></span>
-        </div>
-        <div class="settings-item" onclick="window.open('https://t.me/Gbx_support_bot', '_blank')">
-            <span>Report & Contact</span>
-            <span style="color: var(--accent);">@Gbx_support_bot ></span>
-        </div>
-    </div>
-
-    <!-- BOTTOM NAVIGATION (Exact 5 Options) -->
+    <!-- FIXED BOTTOM NAVIGATION (Exact 4 Options: Email, Inbox, Switch Email, Google) -->
     <nav>
-        <button onclick="switchTab('email', this)" class="active">Email</button>
-        <button onclick="switchTab('inbox', this)">Inbox</button>
-        <button onclick="switchTab('switch', this)">Switch Email</button>
-        <button onclick="switchTab('google', this)">Google</button>
-        <button onclick="switchTab('help', this)">Help</button>
+        <button onclick="switchTab('email', this)" class="active" id="nav-email">Email</button>
+        <button onclick="switchTab('inbox', this)" id="nav-inbox">Inbox</button>
+        <button onclick="switchTab('switch', this)" id="nav-switch">Switch Email</button>
+        <button onclick="switchTab('google', this)" id="nav-google">Google</button>
     </nav>
 
     <script>
         setTimeout(() => {
             const s = document.getElementById('splash-screen');
             s.style.opacity = '0';
-            setTimeout(() => s.style.display = 'none', 500);
-        }, 1200);
+            setTimeout(() => s.style.display = 'none', 400);
+        }, 900);
 
         let currentEmail = "degan41478@tabeebee.com";
         let savedEmails = [
@@ -278,6 +302,39 @@
         let activeGenMode = "random";
         let isDarkMode = true;
 
+        const translations = {
+            "English": {
+                email: "Email", inbox: "Inbox", switch: "Switch Email", google: "Google",
+                tempTitle: "Your temporary email address", tempDesc: "Email is randomly generated, expires in about 2 days and cannot be restored.",
+                copyBtn: "COPY TO CLIPBOARD", newBtn: "GET A NEW EMAIL ADDRESS",
+                inboxHeading: "Inbox (1)", switchHeading: "Created Email Addresses", searchPlaceholder: "Search generated emails...",
+                googleTitle: "Custom Active Email", googleDesc: "Enter your own active email address:", googleBtn: "SAVE & USE EMAIL",
+                modalTitle: "Select Language", modalClose: "Close", searchLang: "Search language...",
+                gmTitle: "GET A NEW EMAIL ADDRESS", gmSub: "Choose the type of email you want to create.",
+                stRand: "Random", stDom: "Domain", stPop: "Popular", gmCreate: "CREATE NEW EMAIL", gmCancel: "CANCEL"
+            },
+            "Hindi (हिन्दी)": {
+                email: "ईमेल", inbox: "इनबॉक्स", switch: "स्विच ईमेल", google: "गूगल",
+                tempTitle: "आपका अस्थायी ईमेल पता", tempDesc: "ईमेल रैंडम रूप से जेनरेट होता है, लगभग 2 दिनों में समाप्त हो जाता है।",
+                copyBtn: "क्लिपबोर्ड पर कॉपी करें", newBtn: "नया ईमेल पता प्राप्त करें",
+                inboxHeading: "इनबॉक्स (1)", switchHeading: "बनाए गए ईमेल पते", searchPlaceholder: "ईमेल खोजें...",
+                googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "अपना खुद का सक्रिय ईमेल दर्ज करें:", googleBtn: "सहेजें और उपयोग करें",
+                modalTitle: "भाषा चुनें", modalClose: "बंद करें", searchLang: "भाषा खोजें...",
+                gmTitle: "नया ईमेल पता बनाएं", gmSub: "आप किस प्रकार का ईमेल बनाना चाहते हैं चुनें।",
+                stRand: "रैंडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "नया ईमेल बनाएं", gmCancel: "रद्द करें"
+            },
+            "Bengali (বাংলা)": {
+                email: "ইমেইল", inbox: "ইনবক্স", switch: "সুইচ ইমেইল", google: "গুগল",
+                tempTitle: "আপনার অস্থায়ী ইমেইল ঠিকানা", tempDesc: "ইমেলটি এলোমেলোভাবে তৈরি হয়, প্রায় 2 দিনের মধ্যে মেয়াদ শেষ হয়।",
+                copyBtn: "ক্লিপবোর্ডে কপি করুন", newBtn: "একটি নতুন ইমেইল নিন",
+                inboxHeading: "ইনবক্স (1)", switchHeading: "তৈরি করা ইমেইল ঠিকানা", searchPlaceholder: "ইমেল খুঁজুন...",
+                googleTitle: "কাস্টম সক্রিয় ইমেইল", googleDesc: "আপনার নিজস্ব সক্রিয় ইমেল লিখুন:", googleBtn: "সংরক্ষণ করুন এবং ব্যবহার করুন",
+                modalTitle: "ভাষা নির্বাচন করুন", modalClose: "বন্ধ করুন", searchLang: "ভাষা খুঁজুন...",
+                gmTitle: "নতুন ইমেইল তৈরি করুন", gmSub: "আপনি কোন ধরণের ইমেল তৈরি করতে চান তা চয়ন করুন।",
+                stRand: "র‌্যান্ডম", stDom: "ডোমেন", stPop: "জনপ্রিয়", gmCreate: "নতুন ইমেইল তৈরি করুন", gmCancel: "বাতিল"
+            }
+        };
+
         const indianLanguages = [
             "English", "Hindi (हिन्दी)", "Bengali (বাংলা)", "Telugu (తెలుగు)", 
             "Marathi (मराठी)", "Tamil (தமிழ்)", "Gujarati (ગુજરાતી)", "Urdu (اردو)", 
@@ -285,10 +342,12 @@
             "Odia (ଓଡ଼ିଆ)", "Assamese (অসমীয়া)", "Nepali (नेपाली)", "Sanskrit (संस्कृतम्)"
         ];
 
-        function initLanguages() {
+        let currentLangKey = "English";
+
+        function initLanguages(filterText = "") {
             let container = document.getElementById("lang-list-container");
             container.innerHTML = "";
-            indianLanguages.forEach(lang => {
+            indianLanguages.filter(l => l.toLowerCase().includes(filterText.toLowerCase())).forEach(lang => {
                 container.innerHTML += `<div class="lang-item" onclick="selectLanguage('${lang}')">${lang}</div>`;
             });
         }
@@ -314,13 +373,13 @@
             savedEmails.forEach(item => {
                 if(filter && !item.email.toLowerCase().includes(filter.toLowerCase())) return;
                 let isActive = (item.email === currentEmail);
-                listHTML += `<div class="card" style="padding: 12px; margin-bottom: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="selectEmail('${item.email}')">
+                listHTML += `<div class="card" style="padding: 10px; margin-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="selectEmail('${item.email}')">
                     <div>
-                        <div style="font-weight: 600; font-size: 14px; color: var(--text-main);">${item.email}</div>
-                        <div style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">✉ ${item.count}</div>
+                        <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${item.email}</div>
+                        <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">✉ ${item.count}</div>
                     </div>
-                    <div style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;">
-                        ${isActive ? '<div style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></div>' : ''}
+                    <div style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;">
+                        ${isActive ? '<div style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></div>' : ''}
                     </div>
                 </div>`;
             });
@@ -403,25 +462,60 @@
 
         function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
         function closeLangModal() { document.getElementById("lang-modal").style.display = "none"; }
+        
         function filterLanguages() {
-            let q = document.getElementById("lang-search").value.toLowerCase();
-            let container = document.getElementById("lang-list-container");
-            container.innerHTML = "";
-            indianLanguages.filter(l => l.toLowerCase().includes(q)).forEach(lang => {
-                container.innerHTML += `<div class="lang-item" onclick="selectLanguage('${lang}')">${lang}</div>`;
-            });
+            let q = document.getElementById("lang-search").value;
+            initLanguages(q);
         }
+
         function selectLanguage(lang) {
-            document.getElementById("lang-btn").innerText = "🌐 " + lang.split(" ")[0].toUpperCase().substring(0, 2);
+            currentLangKey = lang;
+            let shortCode = lang.split(" ")[0].toUpperCase().substring(0, 2);
+            document.getElementById("lang-btn").innerText = "🌐 " + shortCode;
             closeLangModal();
-            alert("Language selected: " + lang);
+
+            let t = translations[lang] || translations["English"];
+            
+            document.getElementById("nav-email").innerText = t.email;
+            document.getElementById("nav-inbox").innerText = t.inbox;
+            document.getElementById("nav-switch").innerText = t.switch;
+            document.getElementById("nav-google").innerText = t.google;
+
+            document.getElementById("lbl-temp-title").innerText = t.tempTitle;
+            document.getElementById("lbl-temp-desc").innerText = t.tempDesc;
+            document.getElementById("btn-copy").innerText = t.copyBtn;
+            document.getElementById("btn-new").innerText = t.newBtn;
+
+            document.getElementById("lbl-inbox-heading").innerText = t.inboxHeading;
+            document.getElementById("lbl-switch-heading").innerText = t.switchHeading;
+            document.getElementById("email-search").placeholder = t.searchPlaceholder;
+
+            document.getElementById("lbl-google-title").innerText = t.googleTitle;
+            document.getElementById("lbl-google-desc").innerText = t.googleDesc;
+            document.getElementById("lbl-google-btn").innerText = t.googleBtn;
+
+            document.getElementById("m-title").innerText = t.modalTitle;
+            document.getElementById("lang-search").placeholder = t.searchLang;
+            document.getElementById("m-close").innerText = t.modalClose;
+
+            document.getElementById("gm-title").innerText = t.gmTitle;
+            document.getElementById("gm-sub").innerText = t.gmSub;
+            document.getElementById("st-rand").innerText = t.stRand;
+            document.getElementById("st-dom").innerText = t.stDom;
+            document.getElementById("st-pop").innerText = t.stPop;
+            document.getElementById("gm-rand-info").innerText = t.tempDesc;
+            document.getElementById("gm-create").innerText = t.gmCreate;
+            document.getElementById("gm-cancel").innerText = t.gmCancel;
         }
 
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
             document.body.classList.toggle("light-theme", !isDarkMode);
             document.getElementById("theme-icon").innerText = isDarkMode ? "☀️" : "🌙";
-            document.getElementById("dark-toggle").checked = isDarkMode;
+        }
+
+        function openSupport() {
+            window.open("https://t.me/Gbx_support_bot", "_blank");
         }
     </script>
 </body>
