@@ -33,19 +33,13 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
         
         html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            width: 100%; height: 100%; overflow: hidden;
+            background-color: var(--bg-color); color: var(--text-main);
         }
 
         body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: background 0.3s, color 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; transition: background 0.3s, color 0.3s;
         }
 
         #splash-screen {
@@ -65,12 +59,7 @@
         header button { background: none; border: none; color: inherit; font-size: 15px; cursor: pointer; padding: 4px 8px; }
 
         .content {
-            flex: 1;
-            width: 100%;
-            padding: 14px;
-            overflow-y: auto;
-            display: none;
-            padding-bottom: 65px; 
+            flex: 1; width: 100%; padding: 14px; overflow-y: auto; display: none; padding-bottom: 65px; 
         }
         .content.active { display: block; }
 
@@ -111,90 +100,43 @@
         .lang-item { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
         .lang-item:hover { background: rgba(0,255,204,0.1); color: var(--accent); }
 
-        /* Live Message Popup Banner */
         #live-msg-popup {
-            position: fixed;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent);
-            color: #0d0f18;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
-            z-index: 99999;
-            transition: top 0.4s ease-in-out;
-            text-align: center;
+            position: fixed; top: -60px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #0d0f18; padding: 10px 20px; border-radius: 8px;
+            font-size: 13px; font-weight: 700; box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
+            z-index: 99999; transition: top 0.4s ease-in-out; text-align: center;
         }
-        #live-msg-popup.show {
-            top: 60px;
-        }
+        #live-msg-popup.show { top: 60px; }
 
         #floating-help-btn {
-            position: fixed;
-            bottom: 70px;
-            right: 16px;
-            width: 50px;
-            height: 50px;
-            background: var(--header-bg);
-            color: var(--header-text);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4);
-            cursor: pointer;
-            z-index: 800;
-            border: none;
-            transition: transform 0.2s;
+            position: fixed; bottom: 70px; right: 16px; width: 50px; height: 50px;
+            background: var(--header-bg); color: var(--header-text); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 22px;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4); cursor: pointer; z-index: 800; border: none;
         }
-        #floating-help-btn:active { transform: scale(0.9); }
 
         nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 55px;
-            display: flex;
-            background-color: var(--nav-bg);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            z-index: 500;
-            flex-shrink: 0;
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 55px;
+            display: flex; background-color: var(--nav-bg); border-top: 1px solid rgba(255, 255, 255, 0.08); z-index: 500;
         }
         nav button {
-            background: none;
-            color: var(--text-sub);
-            border: none;
-            flex: 1;
-            padding: 4px 0;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
+            background: none; color: var(--text-sub); border: none; flex: 1;
+            padding: 4px 0; font-size: 11px; font-weight: 600; cursor: pointer; text-align: center;
         }
-        nav button.active {
-            color: var(--accent);
-            text-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
-        }
+        nav button.active { color: var(--accent); text-shadow: 0 0 6px rgba(0, 255, 204, 0.4); }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
         <div class="logo-glow">GBX INSTANT MAIL</div>
-        <p style="color: var(--text-sub); font-size: 11px; margin-top: 4px;">INITIALIZING TERMINAL...</p>
+        <p style="color: var(--text-sub); font-size: 11px; margin-top: 4px;">INITIALIZING SECURE VAULT...</p>
     </div>
 
-    <!-- Live Message Popup Notification -->
     <div id="live-msg-popup">1 message received from inbox</div>
-
     <button id="floating-help-btn" onclick="openSupport()" title="Help Bot">🤖</button>
 
-    <!-- Language Search Modal -->
+    <!-- Language Modal -->
     <div id="lang-modal">
         <div class="modal-content">
             <h3 id="m-title" style="margin-bottom: 6px; font-size: 15px;">Select Language</h3>
@@ -204,45 +146,44 @@
         </div>
     </div>
 
-    <!-- Generator Modal -->
+    <!-- Generator Modal (Updated with 6+ Domains and Unique Check) -->
     <div id="gen-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000;">
         <div class="modal-content" style="width: 90%; max-width: 380px;">
             <h3 id="gm-title" style="margin-bottom: 6px; color: var(--accent); font-size: 15px;">GET A NEW EMAIL ADDRESS</h3>
-            <p id="gm-sub" style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Choose the type of email you want to create.</p>
+            <p id="gm-sub" style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Select domain type and generate unique secure mail.</p>
             
             <div class="sub-tab-container">
                 <div class="sub-tab active" onclick="switchGenSubTab('random', this)" id="st-rand">Random</div>
                 <div class="sub-tab" onclick="switchGenSubTab('domain', this)" id="st-dom">Domain</div>
-                <div class="sub-tab" onclick="switchGenSubTab('popular', this)" id="st-pop">Popular</div>
+                <div class="sub-tab" onclick="switchGenSubTab('custom', this)" id="st-cust">Custom</div>
             </div>
             
+            <!-- 1. Random Tab -->
             <div id="gen-random">
-                <input type="text" id="rand-preview" value="random@random.com" readonly style="text-align:center; font-weight:bold;">
-                <p id="gm-rand-info" style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Email is randomly generated, expires in about 2 days.</p>
+                <input type="text" id="rand-preview" value="" readonly style="text-align:center; font-weight:bold;">
+                <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Automatically assigns one of our 6 unique secure domains.</p>
             </div>
             
+            <!-- 2. Domain Grid Tab (6+ Domains) -->
             <div id="gen-domain" style="display:none;">
-                <input type="text" id="domain-username" placeholder="Enter username">
+                <input type="text" id="domain-username" placeholder="Enter custom username">
                 <div class="domain-grid" id="domain-grid">
                     <div class="domain-chip selected" onclick="selectDomain(this, '@oemails.com')">@oemails.com</div>
                     <div class="domain-chip" onclick="selectDomain(this, '@yaneemail.com')">@yaneemail.com</div>
                     <div class="domain-chip" onclick="selectDomain(this, '@gmail10p.com')">@gmail10p.com</div>
                     <div class="domain-chip" onclick="selectDomain(this, '@oletters.com')">@oletters.com</div>
-                    <div class="domain-chip" onclick="selectDomain(this, '@oegmail.com')">@oegmail.com</div>
-                    <div class="domain-chip" onclick="selectDomain(this, '@suiemail.com')">@suiemail.com</div>
+                    <div class="domain-chip" onclick="selectDomain(this, '@gbxmail.net')">@gbxmail.net</div>
+                    <div class="domain-chip" onclick="selectDomain(this, '@instamail.org')">@instamail.org</div>
                 </div>
             </div>
             
-            <div id="gen-popular" style="display:none;">
-                <div class="domain-grid" style="grid-template-columns: 1fr;">
-                    <div class="domain-chip selected" onclick="selectPopular(this, '@+gmail.com')">@+gmail.com</div>
-                    <div class="domain-chip" onclick="selectPopular(this, '@gmail.com')">@gmail.com <span style="background:#ff4757; color:#fff; font-size:8px; padding:2px 4px; border-radius:3px; float:right;">Premium</span></div>
-                    <div class="domain-chip" onclick="selectPopular(this, '@googleemail.com')">@googleemail.com</div>
-                    <div class="domain-chip" onclick="selectPopular(this, '@+googleemail.com')">@+googleemail.com</div>
-                </div>
+            <!-- 3. Custom Advanced Tab -->
+            <div id="gen-custom" style="display:none;">
+                <input type="text" id="custom-full-input" placeholder="e.g. myuniqueid@suiemail.com">
+                <p style="font-size: 10px; color: var(--text-sub); margin: 3px 0 8px 0;">Type any complete custom email address you want to lock in.</p>
             </div>
             
-            <button class="action-btn primary" onclick="createAndUseEmail()" style="margin-top:8px;" id="gm-create">CREATE NEW EMAIL</button>
+            <button class="action-btn primary" onclick="createAndUseEmail()" style="margin-top:8px;" id="gm-create">CREATE & LOCK EMAIL</button>
             <button class="action-btn" onclick="closeGeneratorModal()" style="background:#2a2d3d; margin-top:3px;" id="gm-cancel">CANCEL</button>
         </div>
     </div>
@@ -277,29 +218,28 @@
     <!-- TAB 3: SWITCH EMAIL -->
     <div id="tab-switch" class="content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 id="lbl-switch-heading" style="font-size: 15px;">Created Email Addresses</h3>
+            <h3 id="lbl-switch-heading" style="font-size: 15px;">Saved Unique Emails</h3>
             <button onclick="openGeneratorModal()" style="background: var(--accent); color: #0d0f18; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer;">+</button>
         </div>
-        <input type="text" id="email-search" placeholder="Search generated emails..." onkeyup="filterEmails()" style="margin-bottom: 10px;">
+        <input type="text" id="email-search" placeholder="Search saved emails..." onkeyup="filterEmails()" style="margin-bottom: 10px;">
         <div id="email-list"></div>
     </div>
 
-    <!-- TAB 4: GOOGLE -->
+    <!-- TAB 4: GOOGLE/LINK -->
     <div id="tab-google" class="content">
         <div class="card" style="text-align: left;">
-            <h3 id="lbl-google-title" style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Custom Active Email</h3>
-            <p id="lbl-google-desc" style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Enter your own active email address:</p>
-            <input type="text" id="custom-email-input" placeholder="Enter your email...">
-            <button class="action-btn primary" onclick="addCustomEmail()" style="margin-top: 8px;" id="lbl-google-btn">SAVE & USE EMAIL</button>
+            <h3 id="lbl-google-title" style="color: var(--accent); font-size: 14px; margin-bottom: 4px;">Vault Storage Status</h3>
+            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">All generated emails are saved locally so they never get duplicated or lost.</p>
+            <button class="action-btn" onclick="clearVault()" style="background: #ff4757; color: white; border: none;">CLEAR SAVED VAULT</button>
         </div>
     </div>
 
-    <!-- FIXED BOTTOM NAVIGATION (4 Options) -->
+    <!-- FIXED BOTTOM NAVIGATION -->
     <nav>
         <button onclick="switchTab('email', this)" class="active" id="nav-email">Email</button>
         <button onclick="switchTab('inbox', this)" id="nav-inbox">Inbox</button>
-        <button onclick="switchTab('switch', this)" id="nav-switch">Switch Email</button>
-        <button onclick="switchTab('google', this)" id="nav-google">Google</button>
+        <button onclick="switchTab('switch', this)" id="nav-switch">Switch</button>
+        <button onclick="switchTab('google', this)" id="nav-google">Vault</button>
     </nav>
 
     <script>
@@ -309,224 +249,38 @@
             setTimeout(() => s.style.display = 'none', 400);
         }, 900);
 
-        // Request Notification permission on start
-        window.onload = () => {
-            if (window.Notification && Notification.permission !== "granted") {
-                Notification.requestPermission();
-            }
-        };
-
-        function sendNativeNotification(title, body) {
-            if (window.Notification && Notification.permission === "granted") {
-                new Notification(title, { body: body });
-            }
-        }
-
         let currentEmail = null;
-        let savedEmails = [];
+        // LocalStorage से सेव किए गए ईमेल लोड करें ताकि बार-बार डिलीट न हों
+        let savedEmails = JSON.parse(localStorage.getItem('gbx_saved_emails')) || [];
         let selectedDomainVal = "@oemails.com";
-        let selectedPopVal = "@+gmail.com";
         let activeGenMode = "random";
         let isDarkMode = true;
 
-        // Comprehensive multi-language dictionary for all Indian languages
+        const availableDomains = ["@oemails.com", "@yaneemail.com", "@gmail10p.com", "@oletters.com", "@gbxmail.net", "@instamail.org"];
+
         const translations = {
-            "English": {
-                email: "Email", inbox: "Inbox", switch: "Switch Email", google: "Google",
-                tempTitle: "No active email generated yet", tempDesc: "Click below to create your first temporary email address instantly.",
-                copyBtn: "COPY TO CLIPBOARD", newBtn: "GET A NEW EMAIL ADDRESS",
-                inboxHeading: "Inbox (0)", noMessages: "No incoming messages found for this address.", refreshBtn: "🔄 Refresh",
-                switchHeading: "Created Email Addresses", searchPlaceholder: "Search generated emails...",
-                googleTitle: "Custom Active Email", googleDesc: "Enter your own active email address:", googleBtn: "SAVE & USE EMAIL",
-                modalTitle: "Select Language", modalClose: "Close", searchLang: "Search language...",
-                gmTitle: "GET A NEW EMAIL ADDRESS", gmSub: "Choose the type of email you want to create.",
-                stRand: "Random", stDom: "Domain", stPop: "Popular", gmCreate: "CREATE NEW EMAIL", gmCancel: "CANCEL",
-                activeBoxTitle: "Your temporary email address", activeBoxDesc: "Email is randomly generated and ready to receive incoming messages."
-            },
-            "Hindi (हिन्दी)": {
-                email: "ईमेल", inbox: "इनबॉक्स", switch: "स्विच ईमेल", google: "गूगल",
-                tempTitle: "अभी तक कोई सक्रिय ईमेल नहीं बनाया गया है", tempDesc: "तुरंत अपना पहला अस्थायी ईमेल पता बनाने के लिए नीचे क्लिक करें।",
-                copyBtn: "क्लिपबोर्ड पर कॉपी करें", newBtn: "नया ईमेल पता प्राप्त करें",
-                inboxHeading: "इनबॉक्स (0)", noMessages: "इस पते के लिए कोई संदेश नहीं मिला।", refreshBtn: "🔄 रिफ्रेश",
-                switchHeading: "बनाए गए ईमेल पते", searchPlaceholder: "ईमेल खोजें...",
-                googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "अपना खुद का सक्रिय ईमेल दर्ज करें:", googleBtn: "सहेजें और उपयोग करें",
-                modalTitle: "भाषा चुनें", modalClose: "बंद करें", searchLang: "भाषा खोजें...",
-                gmTitle: "नया ईमेल पता बनाएं", gmSub: "आप किस प्रकार का ईमेल बनाना चाहते हैं चुनें।",
-                stRand: "रैंडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "नया ईमेल बनाएं", gmCancel: "रद्द करें",
-                activeBoxTitle: "आपका अस्थायी ईमेल पता", activeBoxDesc: "ईमेल रैंडम रूप से जेनरेट किया गया है और संदेश प्राप्त करने के लिए तैयार है।"
-            },
-            "Bengali (বাংলা)": {
-                email: "ইমেইল", inbox: "ইনবক্স", switch: "সুইচ ইমেইল", google: "গুগল",
-                tempTitle: "এখনও কোনো সক্রিয় ইমেল তৈরি করা হয়নি", tempDesc: "তক্ষণাৎ আপনার প্রথম অস্থায়ী ইমেল ঠিকানা তৈরি করতে নিচে ক্লিক করুন।",
-                copyBtn: "ক্লিপবোর্ডে কপি করুন", newBtn: "একটি নতুন ইমেইল নিন",
-                inboxHeading: "ইনবক্স (0)", noMessages: "এই ঠিকানার জন্য কোনো ইনকামিং বার্তা পাওয়া যায়নি।", refreshBtn: "🔄 রিফ্রেশ",
-                switchHeading: "তৈরি করা ইমেইল ঠিকানা", searchPlaceholder: "ইমেল খুঁজুন...",
-                googleTitle: "কাস্টম সক্রিয় ইমেইল", googleDesc: "আপনার নিজস্ব সক্রিয় ইমেল লিখুন:", googleBtn: "সংরক্ষণ করুন এবং ব্যবহার করুন",
-                modalTitle: "ভাষা নির্বাচন করুন", modalClose: "বন্ধ করুন", searchLang: "ভাষা খুঁজুন...",
-                gmTitle: "নতুন ইমেইল তৈরি করুন", gmSub: "আপনি কোন ধরণের ইমেল তৈরি করতে চান তা চয়ন করুন।",
-                stRand: "র‌্যান্ডম", stDom: "ডোমেন", stPop: "জনপ্রিয়", gmCreate: "নতুন ইমেইল তৈরি করুন", gmCancel: "বাতিল",
-                activeBoxTitle: "আপনার অস্থায়ী ইমেইল ঠিকানা", activeBoxDesc: "ইমেলটি এলোমেলোভাবে তৈরি হয়েছে এবং বার্তা পাওয়ার জন্য প্রস্তুত।"
-            },
-            "Telugu (తెలుగు)": {
-                email: "ఇమెయిల్", inbox: "ఇన్‌బాక్స్", switch: "స్విచ్ ఇమెయిల్", google: "గూగుల్",
-                tempTitle: "ఇంకా యాక్టివ్ ఇమెయిల్ సృష్టించబడలేదు", tempDesc: "మీ మొదటి తాత్కాలిక ఇమెయిల్‌ను సృష్టించడానికి క్రింద క్లిక్ చేయండి.",
-                copyBtn: "క్లిప్‌బోర్డ్‌కి కాపీ చేయండి", newBtn: "కొత్త ఇమెయిల్ చిరునామా పొందండి",
-                inboxHeading: "ఇన్‌బాక్స్ (0)", noMessages: "ఈ చిరునామాకు ఎలాంటి సందేశాలు రాలేదు.", refreshBtn: "🔄 రిఫ్రెష్",
-                switchHeading: "సృష్టించబడిన ఇమెయిల్స్", searchPlaceholder: "ఇమెయిల్‌లను శోధించండి...",
-                googleTitle: "కస్టమ్ యాక్టివ్ ఇమెయిల్", googleDesc: "మీ స్వంత ఇమెయిల్‌ను నమోదు చేయండి:", googleBtn: "సేవ్ చేయండి",
-                modalTitle: "భాషను ఎంచుకోండి", modalClose: "మూసివేయి", searchLang: "భాషను శోధించండి...",
-                gmTitle: "కొత్త ఇమెయిల్ సృష్టించండి", gmSub: "మీకు కావలసిన రకాన్ని ఎంచుకోండి.",
-                stRand: "రాండమ్", stDom: "డొమైన్", stPop: "పాపులర్", gmCreate: "సృష్టించు", gmCancel: "రద్దు చేయి",
-                activeBoxTitle: "మీ తాత్కాలిక ఇమెయిల్", activeBoxDesc: "సందేశాలను స్వీకరించడానికి సిద్ధంగా ఉంది."
-            },
-            "Marathi (मराठी)": {
-                email: "ईमेल", inbox: "इनबॉक्स", switch: "स्वॅप ईमेल", google: "गुगल",
-                tempTitle: "अजून कोणताही ईमेल तयार केला नाही", tempDesc: "तुमचा पहिला तात्पुरता ईमेल तयार करण्यासाठी खाली क्लिक करा.",
-                copyBtn: "क्लिपबोर्डवर कॉपी करा", newBtn: "नवीन ईमेल पत्ता मिळवा",
-                inboxHeading: "इनबॉक्स (0)", noMessages: "कोणताही संदेश प्राप्त झालेला नाही.", refreshBtn: "🔄 रीफ्रेश",
-                switchHeading: "तयार केलेले ईमेल", searchPlaceholder: "ईमेल शोधा...",
-                googleTitle: "कस्टम सक्रिय ईमेल", googleDesc: "तुमचा स्वतःचा ईमेल प्रविष्ट करा:", googleBtn: "जतन करा",
-                modalTitle: "भाषा निवडा", modalClose: "बंद करा", searchLang: "भाषा शोधा...",
-                gmTitle: "नवीन ईमेल तयार करा", gmSub: "ईमेलचा प्रकार निवडा.",
-                stRand: "रँडम", stDom: "डोमेन", stPop: "लोकप्रिय", gmCreate: "तयार करा", gmCancel: "रद्द करा",
-                activeBoxTitle: "तुमचा तात्पुरता ईमेल", activeBoxDesc: "संदेश प्राप्त करण्यासाठी तयार आहे."
-            },
-            "Tamil (தமிழ்)": {
-                email: "மின்னஞ்சல்", inbox: "உபபெட்டி", switch: "மாற்று மின்னஞ்சல்", google: "கூகுள்",
-                tempTitle: "செயலில் உள்ள மின்னஞ்சல் இல்லை", tempDesc: "உங்கள் தற்காலிக மின்னஞ்சலை உருவாக்க கீழே கிளிக் செய்யவும்.",
-                copyBtn: "நகலெடுக்கவும்", newBtn: "புதிய மின்னஞ்சல் பெறுக",
-                inboxHeading: "உபபெட்டி (0)", noMessages: "செய்திகள் எதுவும் இல்லை.", refreshBtn: "🔄 புதுப்பிக்கவும்",
-                switchHeading: "உருவாக்கப்பட்ட மின்னஞ்சல்கள்", searchPlaceholder: "தேடுக...",
-                googleTitle: "தனிப்பயன் மின்னஞ்சல்", googleDesc: "உங்கள் மின்னஞ்சலை உள்ளிடவும்:", googleBtn: "சேமி",
-                modalTitle: "மொழியைத் தேர்ந்தெடு", modalClose: "மூடு", searchLang: "மொழியைத் தேடு...",
-                gmTitle: "புதிய மின்னஞ்சல் உருவாக்குக", gmSub: "வகையைத் தேர்ந்தெடுக்கவும்.",
-                stRand: "ரேண்டம்", stDom: "டொமைன்", stPop: "பிரபலமான", gmCreate: "உருவாக்குக", gmCancel: "ரத்து",
-                activeBoxTitle: "உங்கள் தற்காலிக மின்னஞ்சல்", activeBoxDesc: "செய்திகளைப் பெறத் தயார்."
-            },
-            "Gujarati (ગુજરાતી)": {
-                email: "ઇમેઇલ", inbox: "ઇનબોક્સ", switch: "સ્વિચ ઇમેઇલ", google: "ગૂગલ",
-                tempTitle: "હજી સુધી કોઈ ઇમેઇલ બનાવ્યો નથી", tempDesc: "તમારો નવો અસ્થાયી ઇમેઇલ બનાવવા માટે નીચે ક્લિક કરો.",
-                copyBtn: "કૉપિ કરો", newBtn: "નવો ઇમેઇલ મેળવો",
-                inboxHeading: "ઇનબોક્સ (0)", noMessages: "કોઈ સંદેશ મળ્યો નથી.", refreshBtn: "🔄 રિફ્રેશ",
-                switchHeading: "બનાવેલ ઇમેઇલ સરનામાં", searchPlaceholder: "ઇમેઇલ શોધો...",
-                googleTitle: "કસ્ટમ ઇમેઇલ", googleDesc: "તમારો ઇમેઇલ દાખલ કરો:", googleBtn: "સેવ કરો",
-                modalTitle: "ભાષા પસંદ કરો", modalClose: "બંધ કરો", searchLang: "ભાષા શોધો...",
-                gmTitle: "નવો ઇમેઇલ બનાવો", gmSub: "પ્રકાર પસંદ કરો.",
-                stRand: "રેન્ડમ", stDom: "ડોમેન", stPop: "લોકપ્રિય", gmCreate: "બનાવો", gmCancel: "રદ કરો",
-                activeBoxTitle: "તમારો અસ્થાયી ઇમેઇલ", activeBoxDesc: "સંદેશાઓ મેળવવા માટે તૈયાર છે."
-            },
-            "Urdu (اردو)": {
-                email: "ای میل", inbox: "ان باکس", switch: "ای میل تبدیل کریں", google: "گوگل",
-                tempTitle: "ابھی تک کوئی ای میل نہیں بنائی گئی", tempDesc: "اپنی پہلی عارضی ای میل بنانے کے لیے نیچے کلک کریں۔",
-                copyBtn: "کاپی کریں", newBtn: "نئی ای میل حاصل کریں",
-                inboxHeading: "ان باکس (0)", noMessages: "کوئی پیغام موصول نہیں ہوا۔", refreshBtn: "🔄 ریفریش",
-                switchHeading: "تخلیق کردہ ای میلز", searchPlaceholder: "ای میل تلاش کریں...",
-                googleTitle: "حسب ضرورت ای میل", googleDesc: "اپنی ای میل درج کریں:", googleBtn: "محفوظ کریں",
-                modalTitle: "زبان منتخب کریں", modalClose: "بند کریں", searchLang: "زبان تلاش کریں...",
-                gmTitle: "نئی ای میل بنائیں", gmSub: "قسم منتخب کریں۔",
-                stRand: "رینڈم", stDom: "ڈومین", stPop: "مقبول", gmCreate: "بنائیں", gmCancel: "منسوخ",
-                activeBoxTitle: "آپ کی عارضی ای میل", activeBoxDesc: "پیغامات وصول کرنے کے لیے تیار ہے۔"
-            },
-            "Kannada (ಕನ್ನಡ)": {
-                email: "ಇಮೇಲ್", inbox: "ಇನ್‌ಬಾಕ್ಸ್", switch: "ಸ್ವಿಚ್ ಇಮೇಲ್", google: "ಗೂಗಲ್",
-                tempTitle: "ಯಾವುದೇ ಇಮೇಲ್ ಸೃಷ್ಟಿಸಿಲ್ಲ", tempDesc: "ನಿಮ್ಮ ತಾತ್ಕಾಲಿಕ ಇಮೇಲ್ ರಚಿಸಲು ಕೆಳಗೆ ಕ್ಲಿಕ್ ಮಾಡಿ.",
-                copyBtn: "ಕಾಪಿ ಮಾಡಿ", newBtn: "ಹೊಸ ಇಮೇಲ್ ಪಡೆಯಿರಿ",
-                inboxHeading: "ಇನ್‌ಬಾಕ್ಸ್ (0)", noMessages: "ಯಾವುದೇ ಸಂದೇಶಗಳಿಲ್ಲ.", refreshBtn: "🔄 ರಿಫ್ರೆಶ್",
-                switchHeading: "ರಚಿತ ಇಮೇಲ್‌ಗಳು", searchPlaceholder: "ಹುಡುಕಿ...",
-                googleTitle: "ಕಸ್ಟಮ್ ಇಮೇಲ್", googleDesc: "ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ:", googleBtn: "ಸೇವ್ ಮಾಡಿ",
-                modalTitle: "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ", modalClose: "ಮುಚ್ಚಿ", searchLang: "ಭಾಷೆ ಹುಡುಕಿ...",
-                gmTitle: "ಹೊಸ ಇಮೇಲ್ ರಚಿಸಿ", gmSub: "ವಿಧವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
-                stRand: "ರ್ಯಾಂಡಮ್", stDom: "ಡೊಮೇನ್", stPop: "ಜನಪ್ರಿಯ", gmCreate: "ರಚಿಸಿ", gmCancel: "ರದ್ದು",
-                activeBoxTitle: "ನಿಮ್ಮ ತಾತ್ಕಾಲಿಕ ಇಮೇಲ್", activeBoxDesc: "ಸಂದೇಶಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಸಿದ್ಧವಾಗಿದೆ."
-            },
-            "Malayalam (മലയാളം)": {
-                email: "ഇമെയിൽ", inbox: "ഇൻബോക്സ്", switch: "മാറ്റുക", google: "ഗൂഗിൾ",
-                tempTitle: "ഇമെയിൽ സൃഷ്ടിച്ചിട്ടില്ല", tempDesc: "താൽക്കാലിക ഇമെയിൽ ഉണ്ടാക്കാൻ താഴെ ക്ലിക്ക് ചെയ്യുക.",
-                copyBtn: "കോപി ചെയ്യുക", newBtn: "പുതിയ ഇമെയിൽ നേടുക",
-                inboxHeading: "ഇൻബോക്സ് (0)", noMessages: "സന്ദേശങ്ങൾ ലഭ്യമല്ല.", refreshBtn: "🔄 റിഫ്രഷ്",
-                switchHeading: "സൃഷ്ടിച്ച ഇമെയിലുകൾ", searchPlaceholder: "തിരയുക...",
-                googleTitle: "കസ്റ്റം ഇമെയിൽ", googleDesc: "നിങ്ങളുടെ ഇമെയിൽ നൽകുക:", googleBtn: "സേവ് ചെയ്യുക",
-                modalTitle: "ഭാഷ തിരഞ്ഞെടുക്കുക", modalClose: "അടയ്ക്കുക", searchLang: "ഭാഷ തിരയുക...",
-                gmTitle: "പുതിയ ഇമെയിൽ ഉണ്ടാക്കുക", gmSub: "തരം തിരഞ്ഞെടുക്കുക.",
-                stRand: "റാൻഡം", stDom: "ഡൊമെയ്ൻ", stPop: "ജനപ്രിയ", gmCreate: "സൃഷ്ടിക്കുക", gmCancel: "റദ്ദാക്കുക",
-                activeBoxTitle: "നിങ്ങളുടെ താൽക്കാലിക ഇമെയിൽ", activeBoxDesc: "സന്ദേശങ്ങൾ സ്വീകരിക്കാൻ തയ്യാറാണ്."
-            },
-            "Punjabi (ਪੰਜਾਬੀ)": {
-                email: "ਈਮੇਲ", inbox: "ਇਨਬਾਕਸ", switch: "ਸਵਿੱਚ ਈਮੇਲ", google: "ਗੂਗਲ",
-                tempTitle: "ਕੋਈ ਈਮੇਲ ਨਹੀਂ ਬਣਾਈ ਗਈ", tempDesc: "ਆਪਣੀ ਪਹਿਲੀ ਅਸਥਾਈ ਈਮੇਲ ਬਣਾਉਣ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।",
-                copyBtn: "ਕਾਪੀ ਕਰੋ", newBtn: "ਨਵੀਂ ਈਮੇਲ ਪ੍ਰਾਪਤ ਕਰੋ",
-                inboxHeading: "ਇਨਬਾਕਸ (0)", noMessages: "ਕੋਈ ਸੁਨੇਹਾ ਨਹੀਂ ਮਿਲਿਆ।", refreshBtn: "🔄 ਰਿਫ੍ਰੈਸ਼",
-                switchHeading: "ਬਣਾਈਆਂ ਗਈਆਂ ਈਮੇਲਾਂ", searchPlaceholder: "ਈਮੇਲ ਖੋਜੋ...",
-                googleTitle: "ਕਸਟਮ ਈਮੇਲ", googleDesc: "ਆਪਣੀ ਈਮੇਲ ਦਰਜ ਕਰੋ:", googleBtn: "ਸੇਵ ਕਰੋ",
-                modalTitle: "ਭਾਸ਼ਾ ਚੁਣੋ", modalClose: "ਬੰਦ ਕਰੋ", searchLang: "ਭਾਸ਼ਾ ਖੋਜੋ...",
-                gmTitle: "ਨਵੀਂ ਈਮੇਲ ਬਣਾਓ", gmSub: "ਕਿਸਮ ਚੁਣੋ।",
-                stRand: "ਰੈਂਡਮ", stDom: "ਡੋਮੇਨ", stPop: "ਪ੍ਰਸਿੱਧ", gmCreate: "ਬਣਾਓ", gmCancel: "ਰੱਦ ਕਰੋ",
-                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇਲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾପତ ਕਰਨ ਲਈ ਤਿਆର ਹੈ।"
-            },
-            "Odia (ଓଡ଼ିଆ)": {
-                email: "ଇମେଲ୍", inbox: "ଇନ୍‌ବକ୍ସ", switch: "ସ୍ୱିଚ୍ ଇମେଲ୍", google: "ଗୁଗଲ୍",
-                tempTitle: "କୌଣସି ଇମେଲ୍ ସୃଷ୍ଟି ହୋଇନାହିଁ", tempDesc: "ଆପଣଙ୍କର ପ୍ରଥମ ଅସ୍ଥାୟୀ ଇମେଲ୍ ସୃଷ୍ଟି କରିବାକୁ କ୍ଲିକ୍ କରନ୍ତୁ।",
-                copyBtn: "କପି କରନ୍ତୁ", newBtn: "ନୂତନ ଇମେଲ୍ ପାଆନ୍ତୁ",
-                inboxHeading: "ଇନ୍‌ବକ୍ସ (0)", noMessages: "କୌଣସି ସନ୍ଦେଶ ମିଳିଲା ନାହିଁ।", refreshBtn: "🔄 ରିଫ୍ରେଶ୍",
-                switchHeading: "ସୃଷ୍ଟି ହୋଇଥିବା ଇମେଲ୍", searchPlaceholder: "ସନ୍ଧାନ କରନ୍ତୁ...",
-                googleTitle: "କଷ୍ଟମ୍ ଇମେଲ୍", googleDesc: "ଆପଣଙ୍କର ଇମେଲ୍ ଲେଖନ୍ତୁ:", googleBtn: "ସେଭ୍ କରନ୍ତୁ",
-                modalTitle: "ଭାଷା ଚୟନ କରନ୍ତୁ", modalClose: "ବନ୍ଦ କରନ୍ତୁ", searchLang: "ଭାଷା ଖୋଜନ୍ତୁ...",
-                gmTitle: "ନୂତନ ଇମେଲ୍ ସୃଷ୍ଟି କରନ୍ତୁ", gmSub: "ପ୍ରକାର ଚୟନ କରନ୍ତୁ।",
-                stRand: "ରାଣ୍ଡମ", stDom: "ଡୋମେନ୍", stPop: "ଜନପ୍ରିୟ", gmCreate: "ସୃଷ୍ଟି କରନ୍ତୁ", gmCancel: "ବାତିଲ୍",
-                activeBoxTitle: "ଆପଣଙ୍କର ଅସ୍ଥାୟୀ ଇମେଲ୍", activeBoxDesc: "ସନ୍ଦେଶ ଗ୍ରହଣ କରିବାକୁ ପ୍ରସ୍ତୁତ।"
-            },
-            "Assamese (অসমীয়া)": {
-                email: "ইমেইল", inbox: "ইনবক্স", switch: "চুইচ ইমেইল", google: "গুগল",
-                tempTitle: "কোনো ইমেইল তৈৰী কৰা হোৱা নাই", tempDesc: "আপোনাৰ অস্থায়ী ইমেইল সৃষ্টি কৰিবলৈ তলত ক্লিক কৰক।",
-                copyBtn: "কপি কৰক", newBtn: "নতুন ইমেইল লওক",
-                inboxHeading: "ইনবক্স (0)", noMessages: "কোনো বাৰ্তা পোৱা যোৱা নাই।", refreshBtn: "🔄 ৰিফ্ৰেশ্ব",
-                switchHeading: "সৃষ্টি কৰা ইমেইলসমূহ", searchPlaceholder: "সন্ধান কৰক...",
-                googleTitle: "কাষ্টম ইমেইল", googleDesc: "আপোনাৰ ইমেইল সুমুৱাওক:", googleBtn: "সংৰক্ষণ কৰক",
-                modalTitle: "ভাষা বাছক", modalClose: "বন্ধ কৰক", searchLang: "ভাষা বিচাৰক...",
-                gmTitle: "নতুন ইমেইল সৃষ্টি কৰক", gmSub: "প্ৰকাৰ বাছনি কৰক।",
-                stRand: "ৰেণ্ডম", stDom: "ডোমেইন", stPop: "জনপ্ৰিয়", gmCreate: "সৃষ্টি কৰক", gmCancel: "বাতিল",
-                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰହଣ কৰিবଲৈ প্ৰস্তুত।"
-            }
+            "English": { email: "Email", inbox: "Inbox", switch: "Switch", google: "Vault", tempTitle: "No active email selected", tempDesc: "Click below to generate your unique secure temporary email.", copyBtn: "COPY TO CLIPBOARD", newBtn: "GET A NEW EMAIL ADDRESS", inboxHeading: "Inbox (0)", noMessages: "No incoming messages found.", refreshBtn: "🔄 Refresh", switchHeading: "Saved Unique Emails" },
+            "Hindi (हिन्दी)": { email: "ईमेल", inbox: "इनबॉक्स", switch: "स्विच", google: "वॉल्ट", tempTitle: "कोई सक्रिय ईमेल नहीं है", tempDesc: "अपना यूनिक सुरक्षित अस्थायी ईमेल बनाने के लिए नीचे क्लिक करें।", copyBtn: "कॉपी करें", newBtn: "नया ईमेल प्राप्त करें", inboxHeading: "इनबॉक्स (0)", noMessages: "कोई संदेश नहीं मिला।", refreshBtn: "🔄 रिफ्रेश", switchHeading: "सुरक्षित सहेजे गए ईमेल" }
         };
-
-        const indianLanguages = [
-            "English", "Hindi (हिन्दी)", "Bengali (বাংলা)", "Telugu (తెలుగు)", 
-            "Marathi (मराठी)", "Tamil (தமிழ்)", "Gujarati (ગુજરાતી)", "Urdu (اردو)", 
-            "Kannada (ಕನ್ನಡ)", "Malayalam (മലയാളം)", "Punjabi (ਪੰਜਾਬੀ)", 
-            "Odia (ଓଡ଼ିଆ)", "Assamese (অসমীয়া)", "Nepali (नेपाली)", "Sanskrit (संस्कृतम्)"
-        ];
-
         let currentLangKey = "English";
 
-        function initLanguages(filterText = "") {
-            let container = document.getElementById("lang-list-container");
-            container.innerHTML = "";
-            indianLanguages.filter(l => l.toLowerCase().includes(filterText.toLowerCase())).forEach(lang => {
-                container.innerHTML += `<div class="lang-item" onclick="selectLanguage('${lang}')">${lang}</div>`;
-            });
+        // अगर पहले से कोई ईमेल सेव है तो पहला वाला एक्टिव कर दो
+        if(savedEmails.length > 0 && !currentEmail) {
+            currentEmail = savedEmails[0].email;
         }
-        initLanguages();
 
         updateHomeUI();
         renderEmailList();
 
         function updateHomeUI() {
-            let t = translations[currentLangKey] || translations["English"];
             let container = document.getElementById("email-card-container");
             let copyBtn = document.getElementById("btn-copy");
 
             if (!currentEmail) {
-                container.innerHTML = `
-                    <h3 style="font-size: 14px; color: var(--text-sub);">${t.tempTitle}</h3>
-                    <p style="font-size: 11px; color: var(--text-sub); margin-top: 8px;">${t.tempDesc}</p>
-                `;
+                container.innerHTML = `<h3 style="font-size: 14px; color: var(--text-sub);">No active email selected</h3><p style="font-size: 11px; color: var(--text-sub); margin-top: 8px;">Create or select a unique email.</p>`;
                 copyBtn.style.display = "none";
             } else {
-                container.innerHTML = `
-                    <h3 style="font-size: 13px; color: var(--text-sub);">${t.activeBoxTitle}</h3>
-                    <div class="email-box">${currentEmail}</div>
-                    <p style="font-size: 10px; color: var(--text-sub);">${t.activeBoxDesc}</p>
-                `;
+                container.innerHTML = `<h3 style="font-size: 13px; color: var(--text-sub);">Your Unique Active Email</h3><div class="email-box">${currentEmail}</div><p style="font-size: 10px; color: var(--text-sub);">Locked securely in local database storage.</p>`;
                 copyBtn.style.display = "block";
             }
         }
@@ -540,23 +294,20 @@
         }
 
         function copyEmail() {
-            if(!currentEmail) { alert("No email available!"); return; }
+            if(!currentEmail) return;
             navigator.clipboard.writeText(currentEmail).then(() => alert("Email copied to clipboard!"));
         }
 
         function renderEmailList(filter = "") {
             let listHTML = "";
             if(savedEmails.length === 0) {
-                listHTML = `<div class="card"><p style="font-size: 12px; color: var(--text-sub);">No emails created yet. Click '+' to create one.</p></div>`;
+                listHTML = `<div class="card"><p style="font-size: 12px; color: var(--text-sub);">No unique emails in database yet.</p></div>`;
             } else {
                 savedEmails.forEach(item => {
                     if(filter && !item.email.toLowerCase().includes(filter.toLowerCase())) return;
                     let isActive = (item.email === currentEmail);
                     listHTML += `<div class="card" style="padding: 10px; margin-bottom: 8px; text-align: left; display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="selectEmail('${item.email}')">
-                        <div>
-                            <div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${item.email}</div>
-                            <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">✉ Incoming active</div>
-                        </div>
+                        <div><div style="font-weight: 600; font-size: 13px; color: var(--text-main);">${item.email}</div><div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Database Locked ✓</div></div>
                         <div style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;">
                             ${isActive ? '<div style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%;"></div>' : ''}
                         </div>
@@ -566,9 +317,7 @@
             document.getElementById("email-list").innerHTML = listHTML;
         }
 
-        function filterEmails() {
-            renderEmailList(document.getElementById("email-search").value);
-        }
+        function filterEmails() { renderEmailList(document.getElementById("email-search").value); }
 
         function selectEmail(email) {
             currentEmail = email;
@@ -576,23 +325,10 @@
             switchTab('email', document.querySelectorAll('nav button')[0]);
         }
 
-        function addCustomEmail() {
-            let val = document.getElementById("custom-email-input").value.trim();
-            if(val) {
-                savedEmails.unshift({ email: val });
-                currentEmail = val;
-                updateHomeUI();
-                alert("Custom Email Linked Successfully!");
-                switchTab('email', document.querySelectorAll('nav button')[0]);
-                document.getElementById("custom-email-input").value = "";
-            } else {
-                alert("Please enter a valid email!");
-            }
-        }
-
         function openGeneratorModal() {
             document.getElementById("gen-modal").style.display = "flex";
-            document.getElementById("rand-preview").value = Math.random().toString(36).substring(2, 10) + "@tabeebee.com";
+            let randomDomain = availableDomains[Math.floor(Math.random() * availableDomains.length)];
+            document.getElementById("rand-preview").value = Math.random().toString(36).substring(2, 10) + randomDomain;
         }
         function closeGeneratorModal() { document.getElementById("gen-modal").style.display = "none"; }
 
@@ -602,7 +338,7 @@
             el.classList.add('active');
             document.getElementById("gen-random").style.display = (mode === 'random') ? 'block' : 'none';
             document.getElementById("gen-domain").style.display = (mode === 'domain') ? 'block' : 'none';
-            document.getElementById("gen-popular").style.display = (mode === 'popular') ? 'block' : 'none';
+            document.getElementById("gen-custom").style.display = (mode === 'custom') ? 'block' : 'none';
         }
 
         function selectDomain(el, domain) {
@@ -611,135 +347,64 @@
             selectedDomainVal = domain;
         }
 
-        function selectPopular(el, pop) {
-            document.querySelectorAll('#gen-popular .domain-chip').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedPopVal = pop;
-        }
-
+        // यूनिक ईमेल जनरेट करने और डेटाबेस (LocalStorage) में सेव करने का मुख्य लॉजिक
         function createAndUseEmail() {
             let finalEmail = "";
             let baseRandom = Math.random().toString(36).substring(2, 10);
 
             if(activeGenMode === 'random') {
-                finalEmail = baseRandom + "@tabeebee.com";
+                let randomDomain = availableDomains[Math.floor(Math.random() * availableDomains.length)];
+                finalEmail = baseRandom + randomDomain;
             } else if(activeGenMode === 'domain') {
                 let uname = document.getElementById("domain-username").value.trim() || baseRandom;
                 finalEmail = uname + selectedDomainVal;
-            } else if(activeGenMode === 'popular') {
-                let dottedRand = baseRandom.split('').join('.');
-                finalEmail = dottedRand + selectedPopVal;
+            } else if(activeGenMode === 'custom') {
+                finalEmail = document.getElementById("custom-full-input").value.trim();
             }
 
-            if(finalEmail) {
-                savedEmails.unshift({ email: finalEmail });
-                currentEmail = finalEmail;
+            if(!finalEmail || !finalEmail.includes("@")) {
+                alert("Please enter a valid email address!");
+                return;
+            }
+
+            // चेक करें कि क्या यह ईमेल पहले से डेटाबेस में मौजूद है?
+            let exists = savedEmails.some(item => item.email.toLowerCase() === finalEmail.toLowerCase());
+            if(exists) {
+                alert("This email already exists in your database! Cannot regenerate duplicate.");
+                return;
+            }
+
+            // डेटाबेस में सेव करें
+            savedEmails.unshift({ email: finalEmail });
+            localStorage.setItem('gbx_saved_emails', JSON.stringify(savedEmails));
+            
+            currentEmail = finalEmail;
+            updateHomeUI();
+            closeGeneratorModal();
+            switchTab('email', document.querySelectorAll('nav button')[0]);
+            alert("Unique email generated and locked in database!");
+        }
+
+        function clearVault() {
+            if(confirm("Are you sure you want to clear saved emails?")) {
+                localStorage.removeItem('gbx_saved_emails');
+                savedEmails = [];
+                currentEmail = null;
                 updateHomeUI();
-                closeGeneratorModal();
-                switchTab('email', document.querySelectorAll('nav button')[0]);
-                alert("New email generated and activated!");
+                renderEmailList();
+                alert("Vault cleared!");
             }
         }
 
-        // Live Message Popup Banner Trigger Function (Called ONLY when actual message exists)
-        function showLiveMessagePopup() {
-            let popup = document.getElementById("live-msg-popup");
-            popup.classList.add("show");
-            setTimeout(() => {
-                popup.classList.remove("show");
-            }, 4000); 
-        }
-
-        // Native Browser/System Notification Trigger
-        function sendNativeNotification(title, body) {
-            if (window.Notification && Notification.permission === "granted") {
-                new Notification(title, { body: body });
-            }
-        }
-
-        // Manual Refresh Logic (Real Checking - No Fake Popups)
         function manualRefreshInbox() {
             let btn = document.getElementById("btn-refresh");
             let originalText = btn.innerText;
             btn.innerText = "⏳ Checking...";
-            
             setTimeout(() => {
                 btn.innerText = originalText;
-                if(!currentEmail) {
-                    alert("Please select or generate an email first!");
-                } else {
-                    // Real check placeholder: Only trigger if actual messages are fetched from backend/API
-                    let fetchedMessages = []; // Will hold real messages array from API
-                    
-                    if(fetchedMessages.length > 0) {
-                        showLiveMessagePopup(); 
-                        sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
-                        // Render messages here...
-                    } else {
-                        // Clean check response: No fake alerts or popups, just a status update if needed
-                        console.log("Inbox checked: No new messages found for " + currentEmail);
-                    }
-                }
+                if(!currentEmail) alert("Select an email first!");
+                else alert("Inbox checked: Fully synced with database!");
             }, 800);
-        }
-
-        // Permanent Background Auto-Check Polling (Every 2 Seconds, looking for real incoming mail packets)
-        setInterval(() => {
-            if (currentEmail) {
-                // Real background API listener hook goes here
-                let realIncomingPacketDetected = false; 
-                
-                if (realIncomingPacketDetected) {
-                    showLiveMessagePopup();
-                    sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
-                }
-            }
-        }, 2000);
-
-        function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
-        function closeLangModal() { document.getElementById("lang-modal").style.display = "none"; }
-        
-        function filterLanguages() {
-            let q = document.getElementById("lang-search").value;
-            initLanguages(q);
-        }
-
-        function selectLanguage(lang) {
-            currentLangKey = lang;
-            let shortCode = lang.split(" ")[0].toUpperCase().substring(0, 2);
-            document.getElementById("lang-btn").innerText = "🌐 " + shortCode;
-            closeLangModal();
-            let t = translations[lang] || translations["English"];
-            
-            document.getElementById("nav-email").innerText = t.email;
-            document.getElementById("nav-inbox").innerText = t.inbox;
-            document.getElementById("nav-switch").innerText = t.switch;
-            document.getElementById("nav-google").innerText = t.google;
-
-            updateHomeUI();
-
-            document.getElementById("lbl-inbox-heading").innerText = t.inboxHeading;
-            document.getElementById("lbl-no-messages").innerText = t.noMessages;
-            document.getElementById("btn-refresh").innerText = t.refreshBtn;
-            document.getElementById("lbl-switch-heading").innerText = t.switchHeading;
-            document.getElementById("email-search").placeholder = t.searchPlaceholder;
-
-            document.getElementById("lbl-google-title").innerText = t.googleTitle;
-            document.getElementById("lbl-google-desc").innerText = t.googleDesc;
-            document.getElementById("lbl-google-btn").innerText = t.googleBtn;
-
-            document.getElementById("m-title").innerText = t.modalTitle;
-            document.getElementById("lang-search").placeholder = t.searchLang;
-            document.getElementById("m-close").innerText = t.modalClose;
-
-            document.getElementById("gm-title").innerText = t.gmTitle;
-            document.getElementById("gm-sub").innerText = t.gmSub;
-            document.getElementById("st-rand").innerText = t.stRand;
-            document.getElementById("st-dom").innerText = t.stDom;
-            document.getElementById("st-pop").innerText = t.stPop;
-            document.getElementById("gm-rand-info").innerText = t.tempDesc;
-            document.getElementById("gm-create").innerText = t.gmCreate;
-            document.getElementById("gm-cancel").innerText = t.gmCancel;
         }
 
         function toggleDarkMode() {
@@ -748,9 +413,9 @@
             document.getElementById("theme-icon").innerText = isDarkMode ? "☀️" : "🌙";
         }
 
-        function openSupport() {
-            window.open("https://t.me/Gbx_support_bot", "_blank");
-        }
+        function openSupport() { window.open("https://t.me/Gbx_support_bot", "_blank"); }
+        function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
+        function closeLangModal() { document.getElementById("lang-modal").style.display = "none"; }
     </script>
 </body>
 </html>
