@@ -309,7 +309,6 @@
             setTimeout(() => s.style.display = 'none', 400);
         }, 900);
 
-        // Request Notification permission on start
         window.onload = () => {
             if (window.Notification && Notification.permission !== "granted") {
                 Notification.requestPermission();
@@ -329,7 +328,6 @@
         let activeGenMode = "random";
         let isDarkMode = true;
 
-        // Comprehensive multi-language dictionary for all Indian languages
         const translations = {
             "English": {
                 email: "Email", inbox: "Inbox", switch: "Switch Email", google: "Google",
@@ -409,7 +407,7 @@
                 copyBtn: "કૉપિ કરો", newBtn: "નવો ઇમેઇલ મેળવો",
                 inboxHeading: "ઇનબોક્સ (0)", noMessages: "કોઈ સંદેશ મળ્યો નથી.", refreshBtn: "🔄 રિફ્રેશ",
                 switchHeading: "બનાવેલ ઇમેઇલ સરનામાં", searchPlaceholder: "ઇમેઇલ શોધો...",
-                googleTitle: "કસ્ટમ ઇમેઇલ", googleDesc: "તમારો ઇમેઇલ દાખલ કરો:", googleBtn: "સેવ કરો",
+                googleTitle: "કસ્ટમ ઇમેઇલ", googleDesc: "તમારો ઇમેઇલ દાખल કરો:", googleBtn: "સેવ કરો",
                 modalTitle: "ભાષા પસંદ કરો", modalClose: "બંધ કરો", searchLang: "ભાષા શોધો...",
                 gmTitle: "નવો ઇમેઇલ બનાવો", gmSub: "પ્રકાર પસંદ કરો.",
                 stRand: "રેન્ડમ", stDom: "ડોમેન", stPop: "લોકપ્રિય", gmCreate: "બનાવો", gmCancel: "રદ કરો",
@@ -461,7 +459,7 @@
                 modalTitle: "ਭਾਸ਼ਾ ਚੁਣੋ", modalClose: "ਬੰਦ ਕਰੋ", searchLang: "ਭਾਸ਼ਾ ਖੋਜੋ...",
                 gmTitle: "ਨਵੀਂ ਈਮੇਲ ਬਣਾਓ", gmSub: "ਕਿਸਮ ਚੁਣੋ।",
                 stRand: "ਰੈਂਡਮ", stDom: "ਡੋਮੇਨ", stPop: "ਪ੍ਰਸਿੱਧ", gmCreate: "ਬਣਾਓ", gmCancel: "ਰੱਦ ਕਰੋ",
-                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇਲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾପତ ਕਰਨ ਲਈ ਤਿਆର ਹੈ।"
+                activeBoxTitle: "ਤੁਹਾਡੀ ਅਸਥਾਈ ਈਮੇਲ", activeBoxDesc: "ਸੁਨੇਹਾ ਪ੍ਰਾਪତ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ।"
             },
             "Odia (ଓଡ଼ିଆ)": {
                 email: "ଇମେଲ୍", inbox: "ଇନ୍‌ବକ୍ସ", switch: "ସ୍ୱିଚ୍ ଇମେଲ୍", google: "ଗୁଗଲ୍",
@@ -485,7 +483,7 @@
                 modalTitle: "ভাষা বাছক", modalClose: "বন্ধ কৰক", searchLang: "ভাষা বিচাৰক...",
                 gmTitle: "নতুন ইমেইল সৃষ্টি কৰক", gmSub: "প্ৰকাৰ বাছনি কৰক।",
                 stRand: "ৰেণ্ডম", stDom: "ডোমেইন", stPop: "জনপ্ৰিয়", gmCreate: "সৃষ্টি কৰক", gmCancel: "বাতিল",
-                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰହଣ কৰিবଲৈ প্ৰস্তুত।"
+                activeBoxTitle: "আপোনাৰ অস্থায়ী ইমেইল", activeBoxDesc: "বাৰ্তা গ্ৰहଣ কৰিবଲৈ প্ৰস্তুত।"
             }
         };
 
@@ -537,6 +535,7 @@
             document.getElementById('tab-' + tabName).classList.add('active');
             if(btn) btn.classList.add('active');
             if(tabName === 'switch') renderEmailList();
+            if(tabName === 'inbox') fetchLiveInbox(); // जब इनबॉक्स टैब खोलेंगे तो लाइव मैसेज लोड होगा
         }
 
         function copyEmail() {
@@ -574,6 +573,7 @@
             currentEmail = email;
             updateHomeUI();
             switchTab('email', document.querySelectorAll('nav button')[0]);
+            fetchLiveInbox();
         }
 
         function addCustomEmail() {
@@ -638,10 +638,10 @@
                 closeGeneratorModal();
                 switchTab('email', document.querySelectorAll('nav button')[0]);
                 alert("New email generated and activated!");
+                fetchLiveInbox();
             }
         }
 
-        // Live Message Popup Banner Trigger Function (Called ONLY when actual message exists)
         function showLiveMessagePopup() {
             let popup = document.getElementById("live-msg-popup");
             popup.classList.add("show");
@@ -650,14 +650,47 @@
             }, 4000); 
         }
 
-        // Native Browser/System Notification Trigger
         function sendNativeNotification(title, body) {
             if (window.Notification && Notification.permission === "granted") {
                 new Notification(title, { body: body });
             }
         }
 
-        // Manual Refresh Logic (Real Checking - No Fake Popups)
+        // BACKEND CONNECTION FIX: असली बैकएंड से इनबॉक्स डेटा फेच करने का फंक्शन
+        function fetchLiveInbox() {
+            if (!currentEmail) return;
+            
+            // यह आपके रेंडर वाले बैकएंड से कनेक्ट होगा (यहाँ अपना Render ऐप का URL डालें)
+            let backendURL = `/api/inbox/${encodeURIComponent(currentEmail)}`;
+            
+            fetch(backendURL)
+            .then(res => res.json())
+            .then(data => {
+                let messages = data.messages || [];
+                let inboxArea = document.getElementById("inbox-content-area");
+                let heading = document.getElementById("lbl-inbox-heading");
+                
+                heading.innerText = `Inbox (${messages.length})`;
+                
+                if (messages.length > 0) {
+                    let html = "";
+                    messages.forEach(msg => {
+                        html += `<div class="card" style="text-align: left; padding: 12px; margin-bottom: 8px;">
+                            <div style="font-size: 11px; color: var(--accent); margin-bottom: 4px;">From: ${msg.from}</div>
+                            <div style="font-size: 12px; color: var(--text-main); word-break: break-all;">${msg.body}</div>
+                        </div>`;
+                    });
+                    inboxArea.innerHTML = html;
+                } else {
+                    let t = translations[currentLangKey] || translations["English"];
+                    inboxArea.innerHTML = `<div class="card"><p id="lbl-no-messages" style="font-size: 12px; color: var(--text-sub);">${t.noMessages}</p></div>`;
+                }
+            })
+            .catch(err => {
+                console.log("Backend sync waiting...");
+            });
+        }
+
         function manualRefreshInbox() {
             let btn = document.getElementById("btn-refresh");
             let originalText = btn.innerText;
@@ -668,33 +701,17 @@
                 if(!currentEmail) {
                     alert("Please select or generate an email first!");
                 } else {
-                    // Real check placeholder: Only trigger if actual messages are fetched from backend/API
-                    let fetchedMessages = []; // Will hold real messages array from API
-                    
-                    if(fetchedMessages.length > 0) {
-                        showLiveMessagePopup(); 
-                        sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
-                        // Render messages here...
-                    } else {
-                        // Clean check response: No fake alerts or popups, just a status update if needed
-                        console.log("Inbox checked: No new messages found for " + currentEmail);
-                    }
+                    fetchLiveInbox();
                 }
             }, 800);
         }
 
-        // Permanent Background Auto-Check Polling (Every 2 Seconds, looking for real incoming mail packets)
+        // बैकग्राउंड ऑटो-पोलिंग (हर 3 सेकंड में चेक करेगा कि कोई नया मेल आया या नहीं)
         setInterval(() => {
             if (currentEmail) {
-                // Real background API listener hook goes here
-                let realIncomingPacketDetected = false; 
-                
-                if (realIncomingPacketDetected) {
-                    showLiveMessagePopup();
-                    sendNativeNotification("GBX Instant Mail", "1 message received from inbox");
-                }
+                fetchLiveInbox();
             }
-        }, 2000);
+        }, 3000);
 
         function openLangModal() { document.getElementById("lang-modal").style.display = "flex"; }
         function closeLangModal() { document.getElementById("lang-modal").style.display = "none"; }
